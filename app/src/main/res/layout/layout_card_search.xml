@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/search_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp50"
+    android:layout_marginEnd="@dimen/dp5"
+    android:layout_marginStart="@dimen/dp5"
+    android:layout_marginTop="@dimen/dp10"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    app:cardCornerRadius="1dp"
+    app:cardElevation="@dimen/dp0">
+
+    <ImageView
+        android:id="@+id/search_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|start"
+        android:padding="@dimen/dp12"
+        android:src="@drawable/ic_arrow_back_black" />
+
+
+    <EditText
+        android:id="@+id/search_edit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center|end"
+        android:layout_marginEnd="@dimen/dp75"
+        android:layout_marginLeft="@dimen/dp40"
+        android:layout_marginRight="@dimen/dp75"
+        android:layout_marginStart="@dimen/dp40"
+        android:gravity="center_vertical"
+        android:hint="@string/search_hint"
+        android:imeOptions="actionSearch"
+        android:maxLines="1"
+        android:textSize="@dimen/sp14" />
+
+
+    <ImageView
+        android:id="@+id/search_text_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|end"
+        android:layout_marginEnd="@dimen/dp60"
+        android:layout_marginRight="@dimen/dp60"
+        android:src="@drawable/ic_close_black"
+        android:visibility="gone" />
+
+
+    <ImageView
+        android:id="@+id/search_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|end"
+        android:clickable="true"
+        android:padding="@dimen/dp12"
+        android:src="@drawable/ic_search_query" />
+
+
+</android.support.v7.widget.CardView>
+

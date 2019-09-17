@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/window_view_background">
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_avatar"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="歌曲名"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="歌手名"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:gravity="center_vertical">
+        <ImageButton
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_music_prev"/>
+
+        <ImageButton
+            android:layout_marginStart="10dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_music_start"
+            android:layout_marginLeft="10dp" />
+
+        <ImageButton
+            android:layout_marginStart="10dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_music_next"
+            android:layout_marginLeft="10dp" />
+    </LinearLayout>
+
+</LinearLayout>

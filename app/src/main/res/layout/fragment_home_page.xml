@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/home_page_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/home_page_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:contentInsetStart="0dp"
+                app:contentInsetStart="0dp"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+
+                <LinearLayout
+                    android:id="@+id/home_page_navigation_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_drawer_home" />
+
+                    <com.blizzard.war.mvp.ui.widget.CircleImageView
+                        android:id="@+id/home_page_toolbar_avatar"
+                        android:layout_width="@dimen/dp34"
+                        android:layout_height="@dimen/dp34"
+                        android:layout_marginEnd="@dimen/dp3"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginRight="@dimen/dp3"
+                        android:layout_marginStart="@dimen/dp16"
+                        android:src="@drawable/ic_avatar"
+                        app:border_width="@dimen/dp1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp10"
+                        android:layout_marginStart="@dimen/dp10"
+                        android:maxLines="1"
+                        android:text="@string/vip_name"
+                        android:textSize="@dimen/sp16" />
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.Toolbar>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/tab_bar_background"
+                android:gravity="center">
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/home_page_sliding_tabs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp48"
+                    android:background="@color/tab_bar_background"
+                    app:tabGravity="fill"
+                    app:tabIndicatorColor="@color/tab_underline_color"
+                    app:tabIndicatorHeight="@dimen/dp1"
+                    app:tabMode="scrollable"
+                    app:tabSelectedTextColor="@color/tab_text_color"
+                    app:tabTextColor="@color/text_gray" />
+            </LinearLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <com.blizzard.war.mvp.ui.widget.NoScrollViewPager
+            android:id="@+id/home_page_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </android.support.design.widget.CoordinatorLayout>
+
+    <com.miguelcatalan.materialsearchview.MaterialSearchView
+        android:id="@+id/home_page_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</FrameLayout>
+
+
+
+
+

@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".mvp.ui.activity.MainActivityRx">
+
+    <item
+        android:id="@+id/id_action_main_game"
+        android:icon="@drawable/ic_toolbar_menu_game_center"
+        android:title="@string/home_page_game"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/id_action_main_listen"
+        android:icon="@drawable/ic_toolbar_headset"
+        android:title="@string/home_page_listen"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/id_action_main_search"
+        android:icon="@drawable/ic_toolbar_menu_search"
+        android:title="@string/home_page_search"
+        app:showAsAction="always" />
+
+</menu>

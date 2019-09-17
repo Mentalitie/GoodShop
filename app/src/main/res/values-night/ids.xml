@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="status_bar_view" type="id" />
+    <item name="translucent_view" type="id" />
+    <item name="operaNav_1" type="id" />
+    <item name="operaNav_2" type="id" />
+    <item name="operaNav_3" type="id" />
+    <item name="operaNav_4" type="id" />
+    <item name="operaNav_5" type="id" />
+</resources>

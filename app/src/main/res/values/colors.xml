@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--系统默认颜色-->
+    <color name="colorPrimary">#3b3b3b</color>
+    <color name="colorPrimaryDark">#373737</color>
+    <color name="colorAccent">#999999</color>
+
+    <color name="window_white">#ffffff</color>
+    <color name="window_background">#3b3b3b</color>
+    <color name="window_view_background">#2b2b2b</color>
+    <color name="window_view_line">#FF4B4B4B</color>
+    <color name="window_control">#FFE6E6E6</color>
+    <color name="window_tool_bar_icon">#FF797979</color>
+
+    <color name="tab_bar_background">#373737</color>
+    <color name="tab_text_color">#ee7799</color>
+    <color name="tab_underline_color">#ee7799</color>
+
+    <color name="navigation_background">#5c5c5c</color>
+    <color name="navigation_text">#b35f76</color>
+
+    <color name="text_default">#ee7799</color>
+    <color name="text_default_gray">#3b3b3b</color>
+    <color name="text_gray">#f1f1f1</color>
+    <color name="text_white">#ffffff</color>
+    <color name="text_hint_default">#bbbbbb</color>
+    <color name="black_alpha_45">#71000000</color>
+    <color name="font_normal">#8f8f8f</color>
+    <color name="font_white">#ffffff</color>
+
+    <color name="button_default">#ee7799</color>
+    <color name="button_line_default">#2b2b2b</color>
+
+    <color name="border_line">#e6e6e6</color>
+    <color name="toast_background">#4d4d4d</color>
+    <color name="edit_un_check">#999999</color>
+
+    <color name="nav_head_image_background">#ee7799</color>
+    <color name="nav_head_round_background">#a8a8a8</color>
+    <color name="nav_head_tint_image">#262626</color>
+
+    <color name="refresh_show">#b35f76</color>
+    <color name="white_80">#FAFAFA</color>
+
+    <color name="paper_background">#373737</color>
+</resources>

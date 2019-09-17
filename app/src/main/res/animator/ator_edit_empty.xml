@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="sequentially">
+    <!-- editText 是否为空动画-->
+    <objectAnimator
+        android:duration="100"
+        android:propertyName="translationX"
+        android:valueFrom="0"
+        android:valueTo="35"
+        android:valueType="floatType"/>
+    <objectAnimator
+        android:duration="70"
+        android:propertyName="translationX"
+        android:valueFrom="30"
+        android:valueTo="-30"
+        android:valueType="floatType" />
+    <objectAnimator
+        android:duration="70"
+        android:propertyName="translationX"
+        android:valueFrom="-25"
+        android:valueTo="25"
+        android:valueType="floatType" />
+    <objectAnimator
+        android:duration="70"
+        android:propertyName="translationX"
+        android:valueFrom="20"
+        android:valueTo="-20"
+        android:valueType="floatType" />
+    <objectAnimator
+        android:duration="70"
+        android:propertyName="translationX"
+        android:valueFrom="-15"
+        android:valueTo="15"
+        android:valueType="floatType" />
+    <objectAnimator
+        android:duration="70"
+        android:propertyName="translationX"
+        android:valueFrom="10"
+        android:valueTo="-10"
+        android:valueType="floatType" />
+    <objectAnimator
+        android:duration="50"
+        android:propertyName="translationX"
+        android:valueFrom="-5"
+        android:valueTo="0"
+        android:valueType="floatType" />
+</set>

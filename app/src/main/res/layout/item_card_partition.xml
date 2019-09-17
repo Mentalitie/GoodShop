@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/item_card_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp10"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        app:cardBackgroundColor="@color/window_background"
+        app:cardCornerRadius="@dimen/dp4"
+        app:cardElevation="@dimen/dp4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/item_card_cover"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp120"
+                android:scaleType="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp5">
+
+                <!--<com.blizzard.war.mvp.ui.widgetdget.CircleImageView&ndash;&gt;-->
+                <!--android:id="@+id/item_live_user_cover"-->
+                <!--android:layout_width="@dimen/dp30"-->
+                <!--android:layout_height="@dimen/dp30"-->
+                <!--android:layout_gravity="start|top"-->
+                <!--android:src="@drawable/ic_user_default"-->
+                <!--app:border_color="@android:color/white"-->
+                <!--app:border_width="@dimen/dp0" />-->
+
+                <TextView
+                    android:id="@+id/item_card_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp3"
+                    android:layout_marginStart="@dimen/dp3"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/font_normal"
+                    android:textSize="@dimen/sp13" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp5"
+                android:padding="@dimen/dp5">
+
+                <TextView
+                    android:id="@+id/item_card_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/dp4"
+                    android:layout_marginStart="@dimen/dp4"
+                    android:textColor="@color/font_normal"
+                    android:textSize="@dimen/sp11" />
+
+                <TextView
+                    android:id="@+id/item_card_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="@dimen/dp4"
+                    android:layout_marginRight="@dimen/dp4"
+                    android:drawableLeft="@drawable/ic_watching"
+                    android:drawablePadding="@dimen/dp3"
+                    android:drawableStart="@drawable/ic_watching"
+                    android:textColor="@color/font_normal"
+                    android:textSize="@dimen/sp12" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

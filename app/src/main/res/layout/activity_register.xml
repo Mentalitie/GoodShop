@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/window_view_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <LinearLayout
+        android:id="@+id/phone_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp20"
+        android:layout_marginRight="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp5"
+        android:background="@drawable/db_edit_check"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/dp45"
+            android:text="@string/register_text_phone"
+            android:textColor="@color/edit_un_check"
+            android:textSize="@dimen/sp14" />
+
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp48"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginStart="@dimen/dp10"
+            android:background="@android:color/transparent"
+            android:hint="@string/register_hint_phone"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:textColor="@color/edit_un_check"
+            android:textColorHint="@color/edit_un_check"
+            android:textCursorDrawable="@drawable/db_edit_cursor"
+            android:textSize="@dimen/sp16" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/code_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp20"
+        android:layout_marginRight="@dimen/dp20"
+        android:background="@drawable/db_edit_check"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/dp45"
+            android:text="@string/register_text_code"
+            android:textColor="@color/edit_un_check"
+            android:textSize="@dimen/sp14" />
+
+        <EditText
+            android:id="@+id/et_code"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="@dimen/dp48"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp30"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="@string/register_hint_code"
+            android:inputType="phone"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:textColor="@color/edit_un_check"
+            android:textColorHint="@color/edit_un_check"
+            android:textCursorDrawable="@drawable/db_edit_cursor"
+            android:textSize="@dimen/sp16"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/et_getCode"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp40"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:text="@string/register_btn_get_code"
+            android:textColor="@color/text_default"
+            android:textSize="@dimen/sp14" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/password_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp20"
+        android:layout_marginRight="@dimen/dp20"
+        android:background="@drawable/db_edit_un_check"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/dp45"
+            android:text="@string/register_text_password"
+            android:textColor="@color/edit_un_check"
+            android:textSize="@dimen/sp14" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp48"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginStart="@dimen/dp10"
+            android:background="@android:color/transparent"
+            android:hint="@string/register_hint_password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColor="@color/edit_un_check"
+            android:textColorHint="@color/edit_un_check"
+            android:textCursorDrawable="@drawable/db_edit_cursor"
+            android:textSize="@dimen/sp16" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_load_register"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp45"
+        android:layout_marginBottom="@dimen/dp10"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10"
+        android:layout_marginTop="@dimen/dp20"
+        android:background="@drawable/db_press_btn"
+        android:gravity="center"
+        android:text="@string/register_load_btn"
+        android:textColor="@color/text_white"
+        android:textSize="@dimen/sp16" />
+
+</LinearLayout>

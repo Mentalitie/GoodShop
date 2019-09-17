@@ -1,0 +1,70 @@
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_app_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:elevation="@dimen/dp3">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextAppearance="@style/ToolBar.TitleText">
+
+        <ImageView
+            android:id="@+id/layout_menu_icon"
+            android:layout_width="@dimen/dp18"
+            android:layout_height="@dimen/dp18"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp15"
+            android:background="@drawable/db_shape_ripple"
+            android:clickable="true"
+            android:src="@drawable/ic_navigation_drawer"
+            android:tint="@color/window_tool_bar_icon"
+            tools:ignore="KeyboardInaccessibleWidget,RtlHardcoded" />
+
+        <ImageView
+            android:id="@+id/layout_back_icon"
+            android:layout_width="@dimen/dp22"
+            android:layout_height="@dimen/dp22"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp15"
+            android:background="@drawable/db_shape_ripple"
+            android:clickable="true"
+            android:src="@drawable/ic_back_press"
+            android:tint="@color/window_tool_bar_icon"
+            android:visibility="gone"
+            tools:ignore="KeyboardInaccessibleWidget,RtlHardcoded" />
+
+        <ImageView
+            android:id="@+id/layout_close_icon"
+            android:layout_width="@dimen/dp22"
+            android:layout_height="@dimen/dp22"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp5"
+            android:background="@drawable/db_shape_ripple"
+            android:clickable="true"
+            android:src="@drawable/ic_cancel"
+            android:tint="@color/window_tool_bar_icon"
+            android:visibility="gone"
+            tools:ignore="KeyboardInaccessibleWidget,RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/layout_tool_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginStart="@dimen/dp5"
+            android:maxLines="1"
+            android:text="@string/vip_name"
+            android:textColor="@color/font_normal"
+            android:textSize="@dimen/sp16" />
+
+    </android.support.v7.widget.Toolbar>
+
+</android.support.design.widget.AppBarLayout>

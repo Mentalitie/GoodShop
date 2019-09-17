@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp120"
+    android:layout_height="match_parent"
+    android:layout_marginRight="@dimen/dp10"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackgroundBorderless">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp60"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_avatar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp4"
+        android:text="四月是你的谎言"
+        android:textColor="@color/font_normal"
+        android:textSize="@dimen/sp13" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp1"
+        android:text="看到第3话"
+        android:textColor="@color/text_default"
+        android:textSize="@dimen/sp11" />
+</LinearLayout>
