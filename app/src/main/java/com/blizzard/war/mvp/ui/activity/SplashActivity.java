@@ -1,8 +1,10 @@
 package com.blizzard.war.mvp.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import com.blizzard.war.R;
+import com.blizzard.war.utils.SystemBarHelper;
 import com.trello.rxlifecycle2.components.RxActivity;
 
 import java.util.concurrent.TimeUnit;
@@ -34,8 +36,9 @@ public class SplashActivity extends RxActivity {
     }
 
 
+    @SuppressLint("CheckResult")
     private void setUpSplash() {
-        Observable.timer(10, TimeUnit.MILLISECONDS)
+        Observable.timer(2000, TimeUnit.MILLISECONDS)
                 .compose(bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> finishTask());
@@ -43,7 +46,7 @@ public class SplashActivity extends RxActivity {
 
 
     private void finishTask() {
-        JumpFinish(SplashActivity.this, LoginActivityRx.class, true);
+        JumpFinish(SplashActivity.this, LoginActivity.class, true);
     }
 
 

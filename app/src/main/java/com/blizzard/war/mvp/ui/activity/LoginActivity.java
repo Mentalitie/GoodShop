@@ -2,12 +2,10 @@ package com.blizzard.war.mvp.ui.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
-import android.app.PictureInPictureParams;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Rational;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,10 +32,10 @@ import static com.blizzard.war.utils.CommonUtil.SetDrawable;
  * 登录页面
  *
  * @auther: ma
- * @param: LoginActivityRx
+ * @param: LoginActivity
  * @date: 2019/4/17 18:36
  */
-public class LoginActivityRx extends RxBaseActivity {
+public class LoginActivity extends RxBaseActivity {
 
     @BindView(R.id.layout_menu_icon)
     ImageView mMenuICon;
@@ -107,7 +105,7 @@ public class LoginActivityRx extends RxBaseActivity {
                 break;
             case R.id.btn_register:
                 //注册
-                JumpTo(RegisterActivityRx.class);
+                JumpTo(RegisterActivity.class);
                 break;
         }
     }
@@ -157,6 +155,6 @@ public class LoginActivityRx extends RxBaseActivity {
             animator.start();
             return;
         }
-        JumpFinish(this, MainActivityRx.class);
+        JumpFinish(this, MainActivity.class);
     }
 }

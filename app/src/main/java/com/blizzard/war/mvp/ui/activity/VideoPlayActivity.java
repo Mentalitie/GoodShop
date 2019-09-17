@@ -4,6 +4,7 @@ import android.app.PictureInPictureParams;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.util.DisplayMetrics;
 import android.util.Rational;
@@ -30,10 +31,15 @@ import butterknife.OnClick;
 import static com.blizzard.war.utils.CommonUtil.GetColor;
 
 /**
- * Created by Admin on 2019/4/29.
+ * 功能描述:
+ * 视频播放
+ *
+ * @auther: ma
+ * @param: VideoPlayActivity
+ * @date: 2019/9/17 12:50
  */
 
-public class VideoPlayerRx extends RxBaseActivity {
+public class VideoPlayActivity extends RxBaseActivity {
     @BindView(R.id.sv_video)
     SurfaceViewCustom surfaceView;
     @BindView(R.id.bt_next)
@@ -45,6 +51,7 @@ public class VideoPlayerRx extends RxBaseActivity {
     private SurfaceHolder holder;
     private List<String> list = new ArrayList<>();
     private int position;
+    private Handler mHandler;
 
     @Override
     public int getLayoutId() {
@@ -56,8 +63,14 @@ public class VideoPlayerRx extends RxBaseActivity {
         SystemBarHelper.tintStatusBar(this, GetColor(R.color.window_view_background), 0);
         list.add("https://vd3.bdstatic.com/mda-je5re8sbtwpji1vd/sc/mda-je5re8sbtwpji1vd.mp4?auth_key=1568712604-0-0-f4df433403e07e2d2c80e4c7bf4136f8&bcevod_channel=searchbox_feed&pd=bjh&abtest=all");
         list.add("https://vd4.bdstatic.com/mda-je6req249jyj1qu1/sc/mda-je6req249jyj1qu1.mp4?auth_key=1568713271-0-0-dc33fbcf75089bd6561bb25d75fe881d&bcevod_channel=searchbox_feed&pd=bjh&abtest=all");
-        player = new MediaPlayer();
-        ChangeVideo();
+        new Thread() {
+            @Override
+            public void run() {
+                //这里写入子线程需要做的工作
+                player = new MediaPlayer();
+                ChangeVideo();
+            }
+        }.start();
     }
 
     @Override
@@ -77,7 +90,7 @@ public class VideoPlayerRx extends RxBaseActivity {
     }
 
     private void NextVideo() {
-        if (position == list.size()-1) return;
+        if (position == list.size() - 1) return;
         position++;
         player.stop();
         ChangeVideo();

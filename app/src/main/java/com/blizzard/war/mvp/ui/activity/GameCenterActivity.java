@@ -28,11 +28,11 @@ import butterknife.OnClick;
  * 游戏中心
  *
  * @auther: ma
- * @param: GameCenterActivityRx
+ * @param: GameCenterActivity
  * @date: 2019/4/29 17:50
  */
 
-public class GameCenterActivityRx extends RxBaseActivity {
+public class GameCenterActivity extends RxBaseActivity {
     @BindView(R.id.layout_menu_icon)
     ImageView mMenuIcon;
     @BindView(R.id.layout_back_icon)
@@ -58,12 +58,7 @@ public class GameCenterActivityRx extends RxBaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        mMenuIcon.setVisibility(View.GONE);
-        mBackIcon.setVisibility(View.VISIBLE);
-        mToolTitle.setText("游戏中心");
-        mBackIcon.setOnClickListener(v -> finish());
         showProgressBar();
-        mBackIcon.postDelayed(() -> hideProgressBar(), 3000);
         ZoomMediaLoader.getInstance().init(new ImageViewLoader(this));
         //准备数据
         List<String> urls = ImageConfig.getUrls();
@@ -72,13 +67,22 @@ public class GameCenterActivityRx extends RxBaseActivity {
         }
 
     }
+    
+    @Override
+    public void initToolBar() {
+        mMenuIcon.setVisibility(View.GONE);
+        mBackIcon.setVisibility(View.VISIBLE);
+        mToolTitle.setText("游戏中心");
+        mBackIcon.setOnClickListener(v -> finish());
+        mBackIcon.postDelayed(() -> hideProgressBar(), 3000);
+    }
 
     @OnClick(R.id.game_center_image)
     void onClick(View v) {
         switch (v.getId()) {
             case R.id.game_center_image:
                 computeBoundsBackward(0);
-                GPreviewBuilder.from(GameCenterActivityRx.this)//activity实例必须
+                GPreviewBuilder.from(GameCenterActivity.this)//activity实例必须
 //                .to(CustomActivity.class)//自定义Activity 使用默认的预览不需要
                         .setData(mThumbViewInfoList)//集合
 //                        .setUserFragment(UserFragment.class)//自定义Fragment 使用默认的预览不需要
@@ -105,10 +109,6 @@ public class GameCenterActivityRx extends RxBaseActivity {
         }
     }
 
-    @Override
-    public void initToolBar() {
-
-    }
 
     @Override
     public void showProgressBar() {

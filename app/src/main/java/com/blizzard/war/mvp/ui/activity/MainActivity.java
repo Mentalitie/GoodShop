@@ -33,10 +33,10 @@ import butterknife.BindView;
  * 首页主Activity
  *
  * @auther: ma
- * @param: MainActivityRx
+ * @param: MainActivity
  * @date: 2019/4/17 18:36
  */
-public class MainActivityRx extends RxBaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends RxBaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @BindView(R.id.navigation_view)

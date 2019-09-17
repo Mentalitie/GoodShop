@@ -24,11 +24,11 @@ import java.util.TimerTask;
  * 音乐播放基类
  *
  * @auther: ma
- * @param: MusicPlayService
+ * @param: AudioPlayService
  * @date: 2019/5/6 18:20
  */
 
-public class MusicPlayService {
+public class AudioPlayService {
     private int songNum; // 当前播放歌曲在list中的下标，flag为标志
     private List<Integer> prevSongNum = new ArrayList<>(); // 上一首歌曲记忆位置
     private String songName;// 当前播放歌曲名

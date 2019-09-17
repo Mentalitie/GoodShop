@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blizzard.war.mvp.ui.activity.MainActivityRx;
+import com.blizzard.war.mvp.ui.activity.MainActivity;
 import com.blizzard.war.R;
 import com.blizzard.war.mvp.contract.RxLazyFragment;
 import com.blizzard.war.mvp.ui.widget.CustomEmptyView;
@@ -43,8 +43,8 @@ public class TrackerFragment extends RxLazyFragment {
         mToolTitle.setText("我的钱包");
         mMenuIcon.setOnClickListener(v -> {
             Activity activity = getActivity();
-            if (activity instanceof MainActivityRx) {
-                ((MainActivityRx) activity).toggleDrawer();
+            if (activity instanceof MainActivity) {
+                ((MainActivity) activity).toggleDrawer();
             }
         });
         mCustomEmptyView.setEmptyImage(R.drawable.ic_tracker_empty);

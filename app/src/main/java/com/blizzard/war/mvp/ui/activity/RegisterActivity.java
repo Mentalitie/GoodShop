@@ -29,10 +29,10 @@ import static com.blizzard.war.utils.CommonUtil.getHandler;
  * 注册账号
  *
  * @auther: ma
- * @param: RegisterActivityRx
+ * @param: RegisterActivity
  * @date: 2019/4/17 18:36
  */
-public class RegisterActivityRx extends RxBaseActivity {
+public class RegisterActivity extends RxBaseActivity {
     private Handler handler = getHandler();
 
     @BindView(R.id.layout_menu_icon)
@@ -140,7 +140,7 @@ public class RegisterActivityRx extends RxBaseActivity {
             return;
         }
         LoadingShow(this);
-        handler.postDelayed(() -> JumpFinish(RegisterActivityRx.this, MainActivityRx.class, true), 2000);
+        handler.postDelayed(() -> JumpFinish(RegisterActivity.this, MainActivity.class, true), 2000);
     }
 
 }

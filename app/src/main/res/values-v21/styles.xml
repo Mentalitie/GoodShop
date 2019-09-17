@@ -8,15 +8,16 @@
     </style>
 
     <!-- StatusBar为透明色 -->
-    <style name="ColorTranslucentTheme" parent="@style/BaseAppTheme">
+    <style name="SplashTheme" parent="@style/BaseAppTheme">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <!-- Android 5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色 -->
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <!--主界面 设置Style-->
-    <style name="MainActivityColorTranslucentTheme" parent="@style/BaseAppTheme">
+    <style name="MainActivityTheme" parent="@style/BaseAppTheme">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

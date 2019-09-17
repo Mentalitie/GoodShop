@@ -30,8 +30,8 @@ import com.blizzard.war.R;
 import com.blizzard.war.mvp.contract.RxBaseActivity;
 import com.blizzard.war.mvp.ui.adapter.MediaPlayAdapter;
 import com.blizzard.war.mvp.ui.widget.CircleProgressView;
+import com.blizzard.war.service.AudioPlayService;
 import com.blizzard.war.service.HeadsetReceiver;
-import com.blizzard.war.service.MusicPlayService;
 import com.blizzard.war.service.NotificationReceiver;
 import com.blizzard.war.utils.DateUtil;
 import com.blizzard.war.utils.ToastUtil;
@@ -46,14 +46,14 @@ import butterknife.OnClick;
 
 /**
  * 功能描述:
- * 音乐中心 music musicPlayService
+ * 音乐中心 music audioPlayService
  *
  * @auther: ma
- * @param: MediaPlayRx
+ * @param: AudioPlayActivity
  * @date: 2019/5/5 16:57
  */
 
-public class MediaPlayRx extends RxBaseActivity {
+public class AudioPlayActivity extends RxBaseActivity {
     @BindView(R.id.layout_menu_icon)
     ImageView mMenuIcon;
     @BindView(R.id.layout_back_icon)
@@ -84,7 +84,7 @@ public class MediaPlayRx extends RxBaseActivity {
     private int seekToInt;
     private Boolean isSeekBarTouch;
     private List<JSONObject> musicList;
-    private MusicPlayService musicPlayService;
+    private AudioPlayService audioPlayService;
     final Handler musicHandler = new Handler();
 
     public static MediaSession.Token CREATOR;
@@ -108,6 +108,14 @@ public class MediaPlayRx extends RxBaseActivity {
         }
     }
 
+    @Override
+    public void initToolBar() {
+        mMenuIcon.setVisibility(View.GONE);
+        mBackIcon.setVisibility(View.VISIBLE);
+        mToolTitle.setText("音乐中心");
+        showProgressBar();
+    }
+    
     private void initData() {
 //        receiver = new HeadsetReceiver();
 //        IntentFilter intentFilter = new IntentFilter();
@@ -117,11 +125,11 @@ public class MediaPlayRx extends RxBaseActivity {
 //            String s = "";
 //            if (i == 1) {
 //                if (player != null) {
-//                    musicPlayService.goPlay();
+//                    audioPlayService.goPlay();
 //                    s = "插入耳机,继续播放";
 //                }
 //            } else if (i == 0) {
-//                musicPlayService.pause();
+//                audioPlayService.pause();
 //                s = "拔出耳机,停止播放";
 //            }
 ////            ToastUtil.show(s);
@@ -131,13 +139,13 @@ public class MediaPlayRx extends RxBaseActivity {
             @Override
             public void run() {
                 //这里写入子线程需要做的工作
-                musicPlayService = new MusicPlayService();
-                musicList = musicPlayService.getAudioList();//实例化一个List链表数组
-                musicPlayService.setPlayerListener(new MusicPlayService.PlayerListener() {
+                audioPlayService = new AudioPlayService();
+                musicList = audioPlayService.getAudioList();//实例化一个List链表数组
+                audioPlayService.setPlayerListener(new AudioPlayService.PlayerListener() {
                     @Override
                     public void isChangePlay(JSONObject s) {
                         try {
-                            player = musicPlayService.getPlayer();
+                            player = audioPlayService.getPlayer();
                             isSeekBarTouch = false;
                             mMusicNowText.setText(s.getString("songName"));
                             startDuration = DateUtil.getDuration(0);
@@ -159,9 +167,9 @@ public class MediaPlayRx extends RxBaseActivity {
                     }
                 });
                 musicHandler.post(() -> hideProgressBar());
+                mMusicSeekBar.setOnSeekBarChangeListener(new onSeekChange());
             }
         }.start();
-        mMusicSeekBar.setOnSeekBarChangeListener(new onSeekChange());
     }
 
     private void initError() {
@@ -177,39 +185,39 @@ public class MediaPlayRx extends RxBaseActivity {
         switch (view.getId()) {
             case R.id.item_music_play:
                 s = "开始播放";
-                musicPlayService.play();
+                audioPlayService.play();
                 break;
             case R.id.item_music_pause:
                 s = "暂停播放";
-                musicPlayService.pause();
+                audioPlayService.pause();
                 break;
             case R.id.item_music_goPlay:
                 s = "继续播放";
-                musicPlayService.goPlay();
+                audioPlayService.goPlay();
                 break;
             case R.id.item_music_next:
                 s = "下一首";
-                musicPlayService.prev();
+                audioPlayService.prev();
                 break;
             case R.id.item_music_prev:
                 s = "上一首";
-                musicPlayService.next();
+                audioPlayService.next();
                 break;
             case R.id.item_music_stop:
                 s = "停止播放";
-                musicPlayService.stop();
+                audioPlayService.stop();
                 break;
             case R.id.item_music_loop_listener:
                 s = "列表循环";
-                musicPlayService.setListenerModel(0);
+                audioPlayService.setListenerModel(0);
                 break;
             case R.id.item_music_random_listener:
                 s = "随机播放";
-                musicPlayService.setListenerModel(1);
+                audioPlayService.setListenerModel(1);
                 break;
             case R.id.item_music_over_loop_listener:
                 s = "单曲循环";
-                musicPlayService.setLoopIng(true);
+                audioPlayService.setLoopIng(true);
                 break;
             case R.id.layout_back_icon:
                 finish();
@@ -221,13 +229,6 @@ public class MediaPlayRx extends RxBaseActivity {
         ToastUtil.show(s);
     }
 
-    @Override
-    public void initToolBar() {
-        mMenuIcon.setVisibility(View.GONE);
-        mBackIcon.setVisibility(View.VISIBLE);
-        mToolTitle.setText("音乐中心");
-        showProgressBar();
-    }
 
     class onSeekChange implements SeekBar.OnSeekBarChangeListener {
         @Override
@@ -247,7 +248,7 @@ public class MediaPlayRx extends RxBaseActivity {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             if (player == null) {
-                musicPlayService.play();
+                audioPlayService.play();
             }
             isSeekBarTouch = false;
             player.seekTo(seekToInt);
@@ -267,15 +268,15 @@ public class MediaPlayRx extends RxBaseActivity {
         mediaPlayAdapter = new MediaPlayAdapter(this, musicList);
         mRecyclerView.setAdapter(mediaPlayAdapter);
         mediaPlayAdapter.setSelectItem((view, i) -> {
-            if (i != musicPlayService.getSongNum()) {
-                musicPlayService.stop();
-                musicPlayService.setSongNum(i);
-                musicPlayService.play();
+            if (i != audioPlayService.getSongNum()) {
+                audioPlayService.stop();
+                audioPlayService.setSongNum(i);
+                audioPlayService.play();
             } else {
-                if (!musicPlayService.isPause()) {
-                    musicPlayService.pause();
+                if (!audioPlayService.isPause()) {
+                    audioPlayService.pause();
                 } else {
-                    musicPlayService.goPlay();
+                    audioPlayService.goPlay();
                 }
             }
         });
@@ -300,11 +301,11 @@ public class MediaPlayRx extends RxBaseActivity {
         super.onDestroy();
         if (receiver != null) unregisterReceiver(receiver);
         if (mNotificationReceiver != null) unregisterReceiver(mNotificationReceiver);
-        musicPlayService.stop();
+        audioPlayService.stop();
     }
 
     private String getContentText() {
-        return musicPlayService.getSongName();
+        return audioPlayService.getSongName();
     }
 
     /**
@@ -318,7 +319,7 @@ public class MediaPlayRx extends RxBaseActivity {
         Notification notification;
         PendingIntent pendingIntent;
 
-        Intent resultIntent = new Intent(this, MediaPlayRx.class);
+        Intent resultIntent = new Intent(this, AudioPlayActivity.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel mChannel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_LOW);
             manager.createNotificationChannel(mChannel);
@@ -377,22 +378,22 @@ public class MediaPlayRx extends RxBaseActivity {
                     String s = i;
                     if (i.equals(MUSIC_PREV_FILTER)) {
                         s = "通知栏：上一首";
-                        musicPlayService.prev();
+                        audioPlayService.prev();
                     } else if (i.equals(MUSIC_START_FILTER)) {
-                        if (musicPlayService.isPause()) {
+                        if (audioPlayService.isPause()) {
                             s = "通知栏：继续";
-                            musicPlayService.goPlay();
+                            audioPlayService.goPlay();
                         } else {
                             s = "通知栏：开始";
-                            musicPlayService.play();
+                            audioPlayService.play();
                         }
                     } else if (i.equals(MUSIC_PAUSE_FILTER)) {
                         s = "通知栏：暂停";
-                        musicPlayService.pause();
+                        audioPlayService.pause();
                     } else if (i.equals(MUSIC_NEXT_FILTER)) {
                         s = "通知栏：下一首";
 
-                        musicPlayService.next();
+                        audioPlayService.next();
                     }
                     ToastUtil.show(s);
                 });

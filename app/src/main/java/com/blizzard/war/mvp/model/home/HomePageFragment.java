@@ -12,12 +12,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.blizzard.war.mvp.ui.activity.MainActivityRx;
+import com.blizzard.war.mvp.ui.activity.GameCenterActivity;
+import com.blizzard.war.mvp.ui.activity.MainActivity;
 import com.blizzard.war.R;
+import com.blizzard.war.mvp.ui.activity.AudioPlayActivity;
+import com.blizzard.war.mvp.ui.activity.VideoPlayActivity;
 import com.blizzard.war.mvp.ui.adapter.HomePagerAdapter;
 import com.blizzard.war.mvp.contract.RxLazyFragment;
-import com.blizzard.war.mvp.ui.activity.GameCenterActivityRx;
-import com.blizzard.war.mvp.ui.activity.MediaPlayRx;
 import com.blizzard.war.utils.CommonUtil;
 import com.blizzard.war.mvp.ui.widget.CircleImageView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -67,7 +68,7 @@ public class HomePageFragment extends RxLazyFragment {
 
     private void initToolBar() {
         mToolbar.setTitle("");
-        ((MainActivityRx) getActivity()).setSupportActionBar(mToolbar);
+        ((MainActivity) getActivity()).setSupportActionBar(mToolbar);
         mCircleImageView.setImageResource(R.drawable.ic_avatar);
     }
 
@@ -81,6 +82,7 @@ public class HomePageFragment extends RxLazyFragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
 //                TotalStationSearchActivity.launch(getActivity(), query);
+                CommonUtil.JumpTo(VideoPlayActivity.class);
                 return false;
             }
 
@@ -114,11 +116,11 @@ public class HomePageFragment extends RxLazyFragment {
         switch (id) {
             case R.id.id_action_main_game:
                 // 游戏中心
-                CommonUtil.JumpTo(GameCenterActivityRx.class);
+                CommonUtil.JumpTo(GameCenterActivity.class);
                 break;
             case R.id.id_action_main_listen:
                 // 音乐中心
-                CommonUtil.JumpTo(MediaPlayRx.class);
+                CommonUtil.JumpTo(AudioPlayActivity.class);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -128,8 +130,8 @@ public class HomePageFragment extends RxLazyFragment {
     @OnClick(R.id.home_page_navigation_layout)
     void toggleDrawer() {
         Activity activity = getActivity();
-        if (activity instanceof MainActivityRx) {
-            ((MainActivityRx) activity).toggleDrawer();
+        if (activity instanceof MainActivity) {
+            ((MainActivity) activity).toggleDrawer();
         }
     }
 

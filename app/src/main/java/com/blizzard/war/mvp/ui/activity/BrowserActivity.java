@@ -41,7 +41,7 @@ import butterknife.BindView;
  * <p/>
  * 浏览器界面
  */
-public class BrowserActivityRx extends RxBaseActivity {
+public class BrowserActivity extends RxBaseActivity {
 
     private Context context = BiliApplication.GetContext();
 
@@ -115,7 +115,7 @@ public class BrowserActivityRx extends RxBaseActivity {
                 startActivity(intent);
                 break;
             case R.id.menu_copy:
-                ClipboardUtil.setText(BrowserActivityRx.this, copyUrl);
+                ClipboardUtil.setText(BrowserActivity.this, copyUrl);
                 ToastUtil.show("已复制");
                 break;
         }
@@ -143,7 +143,7 @@ public class BrowserActivityRx extends RxBaseActivity {
     }
 
     public static void launch(Activity activity, String url, String title) {
-        Intent intent = new Intent(activity, BrowserActivityRx.class);
+        Intent intent = new Intent(activity, BrowserActivity.class);
         intent.putExtra(ConstantUtil.EXTRA_URL, url);
         intent.putExtra(ConstantUtil.EXTRA_TITLE, title);
         activity.startActivity(intent);
@@ -173,7 +173,7 @@ public class BrowserActivityRx extends RxBaseActivity {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
                 AlertDialog.Builder b2 = new AlertDialog
-                        .Builder(BrowserActivityRx.this)
+                        .Builder(BrowserActivity.this)
                         .setTitle(R.string.app_name)
                         .setMessage(message)
                         .setPositiveButton("确定", (dialog, which) -> result.confirm());

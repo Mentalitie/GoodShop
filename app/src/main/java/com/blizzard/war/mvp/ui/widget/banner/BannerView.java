@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.blizzard.war.R;
-import com.blizzard.war.mvp.ui.activity.BrowserActivityRx;
+import com.blizzard.war.mvp.ui.activity.BrowserActivity;
 import com.blizzard.war.utils.CommonUtil;
 import com.blizzard.war.utils.DisplayUtil;
 import com.bumptech.glide.Glide;
@@ -222,7 +222,7 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
      */
     @Override
     public void onItemClick() {
-        BrowserActivityRx.launch((Activity) getContext(),
+        BrowserActivity.launch((Activity) getContext(),
                 bannerList.get(currentPos).link,
                 bannerList.get(currentPos).title);
     }
