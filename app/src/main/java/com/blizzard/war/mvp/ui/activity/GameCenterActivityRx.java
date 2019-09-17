@@ -1,4 +1,4 @@
-package com.blizzard.war.mvp.model.game;
+package com.blizzard.war.mvp.ui.activity;
 
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.blizzard.war.R;
 import com.blizzard.war.mvp.contract.RxBaseActivity;
+import com.blizzard.war.mvp.model.game.ImageConfig;
+import com.blizzard.war.mvp.model.game.ImageViewLoader;
+import com.blizzard.war.mvp.model.game.UserViewInfo;
 import com.blizzard.war.mvp.ui.widget.CircleProgressView;
 import com.previewlibrary.GPreviewBuilder;
 import com.previewlibrary.ZoomMediaLoader;

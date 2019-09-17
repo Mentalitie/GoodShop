@@ -1,4 +1,4 @@
-package com.blizzard.war.mvp.model.music;
+package com.blizzard.war.mvp.ui.activity;
 
 import android.Manifest;
 import android.app.Notification;
@@ -34,7 +34,6 @@ import com.blizzard.war.service.HeadsetReceiver;
 import com.blizzard.war.service.MusicPlayService;
 import com.blizzard.war.service.NotificationReceiver;
 import com.blizzard.war.utils.DateUtil;
-import com.blizzard.war.utils.ShareUtil;
 import com.blizzard.war.utils.ToastUtil;
 
 import org.json.JSONException;
@@ -127,8 +126,6 @@ public class MediaPlayRx extends RxBaseActivity {
 //            }
 ////            ToastUtil.show(s);
 //        });
-        ShareUtil shareUtil = new ShareUtil();
-        shareUtil.shareLink("www.baidu.com", "测试分享", this);
 
         new Thread() {
             @Override
@@ -147,7 +144,7 @@ public class MediaPlayRx extends RxBaseActivity {
                             endDuration = DateUtil.getDuration(s.getLong("duration"));
                             mMusicNowTime.setText(startDuration + "/" + endDuration);
                             mMusicSeekBar.setMax(s.getInt("duration"));
-                            setNotificationDemoSecond();
+                            setNotification();
                             System.out.println("更新歌曲");
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -295,7 +292,7 @@ public class MediaPlayRx extends RxBaseActivity {
         mCircleProgressView.stopSpinning();
         mRecyclerView.setVisibility(View.VISIBLE);
         mMusicError.setVisibility(View.GONE);
-        setNotificationDemoSecond();
+        setNotification();
     }
 
     @Override
@@ -314,7 +311,7 @@ public class MediaPlayRx extends RxBaseActivity {
      * 自定义通知栏
      */
 
-    private void setNotificationDemoSecond() {
+    private void setNotification() {
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         String id = "my_channel_01";
         String name = "biliBili";

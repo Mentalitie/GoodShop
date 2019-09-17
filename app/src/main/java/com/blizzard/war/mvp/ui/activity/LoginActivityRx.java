@@ -2,15 +2,16 @@ package com.blizzard.war.mvp.ui.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.app.PictureInPictureParams;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Rational;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.blizzard.war.R;
@@ -85,9 +86,6 @@ public class LoginActivityRx extends RxBaseActivity {
             return false;
         });
         SystemBarHelper.tintStatusBar(this, GetColor(R.color.window_background), 0);
-
-        ProgressBar progressBar = new ProgressBar(this);
-        progressBar.setVisibility(View.VISIBLE);
 //        LoadingShow(this);
     }
 

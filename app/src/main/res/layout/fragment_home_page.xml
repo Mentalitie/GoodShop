@@ -42,18 +42,18 @@
                         android:id="@+id/home_page_toolbar_avatar"
                         android:layout_width="@dimen/dp34"
                         android:layout_height="@dimen/dp34"
-                        android:layout_marginEnd="@dimen/dp3"
-                        android:layout_marginLeft="@dimen/dp16"
-                        android:layout_marginRight="@dimen/dp3"
                         android:layout_marginStart="@dimen/dp16"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginEnd="@dimen/dp3"
+                        android:layout_marginRight="@dimen/dp3"
                         android:src="@drawable/ic_avatar"
                         app:border_width="@dimen/dp1" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp10"
                         android:layout_marginStart="@dimen/dp10"
+                        android:layout_marginLeft="@dimen/dp10"
                         android:maxLines="1"
                         android:text="@string/vip_name"
                         android:textSize="@dimen/sp16" />
@@ -71,7 +71,7 @@
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/home_page_sliding_tabs"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/dp48"
                     android:background="@color/tab_bar_background"
                     app:tabGravity="fill"

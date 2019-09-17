@@ -191,7 +191,7 @@ public class MusicPlayService {
                 jsonObject.put("artist", artist);
                 jsonObject.put("display_name", display_name);
 
-                if (duration / 1000 > 60) {
+                if (duration / 1000 > 30) {
                     musicList.add(jsonObject);
                 }
 

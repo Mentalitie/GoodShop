@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.blizzard.war.R;
-import com.blizzard.war.mvp.model.common.BrowserActivityRx;
+import com.blizzard.war.mvp.ui.activity.BrowserActivityRx;
 import com.blizzard.war.utils.CommonUtil;
 import com.blizzard.war.utils.DisplayUtil;
 import com.bumptech.glide.Glide;

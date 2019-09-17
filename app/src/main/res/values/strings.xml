@@ -25,7 +25,7 @@
     <string name="register_show_remind">点击“获取验证码”按钮</string>
 
     <!-- Members -->
-    <string name="vip_name">hotBitmapGG</string>
+    <string name="vip_name">Mexcellent</string>
     <string name="level_text">LV2</string>
     <string name="members">正式会员</string>
     <string name="home_tab_more">更多</string>
@@ -55,7 +55,6 @@
     <string name="new_videos">最新视频</string>
     <string name="hot_videos">最热视频</string>
     <string name="news_videos">最新视频</string>
-    <string name="github_url">https://github.com/HotBitmapGG/bilibili-android-client</string>
     <string name="share_title">分享哔哩哔哩App</string>
     <string name="feedback_titlle">意见反馈</string>
     <string name="feedback_message">如果您有任何意见或者发现了Bug，可以在GitHub上给我提Issuse，我会第一时间关注并解决，谢谢。</string>
@@ -91,10 +90,6 @@
 
     <string name="info_play_times_format">%d</string>
     <string name="info_reviews_format">%d</string>
-    <string name="hotbitmapgg">hotBitmapGG</string>
-    <string name="github_link">https://github.com/HotBitmapGG</string>
-    <string name="sina_weibo_link">新浪微博:http://m.weibo.cn/users/3223089177/qq</string>
-    <string name="jianshu_link">简书:http://www.jianshu.com/notebooks/5181955/latest</string>
     <string name="login">登录</string>
     <string name="all_start">全部开始</string>
     <string name="edit">编辑</string>
@@ -184,6 +179,5 @@
     <string name="music_over_loop">单曲循环</string>
     <string name="music_error_permission">获取权限失败，请重试</string>
     <string name="music_error_rebuild_permission">重试</string>
-
 
 </resources>

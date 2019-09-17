@@ -1,4 +1,4 @@
-package com.blizzard.war.mvp.model.common;
+package com.blizzard.war.mvp.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
