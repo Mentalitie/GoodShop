@@ -16,10 +16,12 @@ import android.widget.TextView;
 import com.blizzard.war.R;
 import com.blizzard.war.app.BiliApplication;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
+
+import static com.blizzard.war.utils.DisplayUtil.dp2px;
 
 /**
  * 功能描述:
@@ -356,12 +358,21 @@ public class CommonUtil {
     /**
      * glide 公共配置
      */
+    public static RequestOptions GlideInfo(Context mContext) {
+        return GlideInfo(mContext, false);
+    }
+
     @SuppressLint("CheckResult")
-    public static RequestOptions GlideInfo() {
+    public static RequestOptions GlideInfo(Context mContext, boolean isCircle) {
         final RequestOptions options = new RequestOptions();
+        if (!isCircle) {
+            options.centerCrop().transform(new CenterCropRoundCornerTransform(dp2px(mContext, 2)));
+
+        } else {
+            options.transform(new CenterCrop());
+        }
         options.placeholder(R.drawable.ic_bili_default_image_tv)
                 .error(R.drawable.ic_bili_default_image_tv)
-                .transform(new CircleCrop())
                 .diskCacheStrategy(DiskCacheStrategy.ALL);//禁用掉Glide的缓存功能
         return options;
     }

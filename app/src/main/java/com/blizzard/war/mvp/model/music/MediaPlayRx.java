@@ -28,7 +28,7 @@ import android.widget.TextView;
 
 import com.blizzard.war.R;
 import com.blizzard.war.mvp.contract.RxBaseActivity;
-import com.blizzard.war.mvp.ui.adapter.pager.MediaPlayAdapter;
+import com.blizzard.war.mvp.ui.adapter.MediaPlayAdapter;
 import com.blizzard.war.mvp.ui.widget.CircleProgressView;
 import com.blizzard.war.service.HeadsetReceiver;
 import com.blizzard.war.service.MusicPlayService;

@@ -61,7 +61,7 @@ public class GameCenterActivityRx extends RxBaseActivity {
         mBackIcon.setOnClickListener(v -> finish());
         showProgressBar();
         mBackIcon.postDelayed(() -> hideProgressBar(), 3000);
-        ZoomMediaLoader.getInstance().init(new ImageViewLoader());
+        ZoomMediaLoader.getInstance().init(new ImageViewLoader(this));
         //准备数据
         List<String> urls = ImageConfig.getUrls();
         for (int i = 0; i < urls.size(); i++) {

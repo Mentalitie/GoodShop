@@ -1,4 +1,4 @@
-package com.blizzard.war.mvp.ui.adapter.pager;
+package com.blizzard.war.mvp.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -45,7 +45,7 @@ public class RecommendAdapter extends RecyclerView.Adapter {
         GridItemViewHolder gridItemViewHolder = (GridItemViewHolder) viewHolder;
         Glide.with(context)
                 .load(R.drawable.ic_avatar)
-                .apply(CommonUtil.GlideInfo())
+                .apply(CommonUtil.GlideInfo(context))
                 .into(gridItemViewHolder.itemCardCover);
         gridItemViewHolder.itemCardUser.setText("默认名称");
         gridItemViewHolder.itemCardTitle.setText("默认标题");

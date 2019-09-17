@@ -1,4 +1,4 @@
-package com.blizzard.war.mvp.ui.adapter.pager;
+package com.blizzard.war.mvp.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -87,28 +87,14 @@ public class LiveAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        /**
-         * glide加载显示图片
-         * load: 图片地址支持网络图
-         * centerCrop | fitCenter: 图片缩放
-         * diskCacheStrategy:图片缓存策略  DiskCacheStrategy.NONE 什么都不缓存
-         *                                DiskCacheStrategy.SOURCE 仅仅只缓存原来的全分辨率的图像
-         *                                DiskCacheStrategy.RESULT 仅仅缓存最终的图像，即降低分辨率后的（或者是转换后的）
-         *                                DiskCacheStrategy.ALL 缓存所有版本的图像（默认行为）
-         * placeholder: 图片加载中的占位图
-         * error: 图片加载失败占位图
-         * dontAnimate: 没有淡入淡出动画
-         * crossFade: 淡入淡出动画
-         * into: 图片加载对象
-         */
         if (i > 0) {
             i -= 1;
         }
         if (viewHolder instanceof LiveItemViewHolder) {
             LiveItemViewHolder liveItemViewHolder = (LiveItemViewHolder) viewHolder;
             Glide.with(context)
-                    .load(entranceIconRes[i])
-                    .apply(CommonUtil.GlideInfo())
+                    .load(R.drawable.ic_avatar)
+                    .apply(CommonUtil.GlideInfo(context))
                     .into(liveItemViewHolder.itemCardCover);
             liveItemViewHolder.itemCardUser.setText("默认名称");
             liveItemViewHolder.itemCardTitle.setText("默认标题");
@@ -129,22 +115,23 @@ public class LiveAdapter extends RecyclerView.Adapter {
         } else if (viewHolder instanceof LiveEntranceViewHolder) {
             LiveEntranceViewHolder liveEntranceViewHolder = (LiveEntranceViewHolder) viewHolder;
             liveEntranceViewHolder.title.setText(entranceTitles[i]);
-            Glide.with(context)
-                    .load(entranceIconRes[i])
-                    .apply(CommonUtil.GlideInfo())
-                    .into(liveEntranceViewHolder.image);
-
+            if (entranceIconRes.length > i) {
+                Glide.with(context)
+                        .load(entranceIconRes[i])
+                        .apply(CommonUtil.GlideInfo(context))
+                        .into(liveEntranceViewHolder.image);
+            }
         } else if (viewHolder instanceof LiveBannerViewHolder) {
             LiveBannerViewHolder liveBannerViewHolder = (LiveBannerViewHolder) viewHolder;
             bannerEntry.clear();
-            bannerEntry.add(new BannerEntry("图片1", "http://d.hiphotos.baidu.com/image/pic/item/6159252dd42a2834a75bb01156b5c9ea15cebf2f.jpg", "http://d.hiphotos.baidu.com/image/pic/item/6159252dd42a2834a75bb01156b5c9ea15cebf2f.jpg"));
-            bannerEntry.add(new BannerEntry("图片2", "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4217624863,2760967261&fm=11&gp=0.jpg", "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4217624863,2760967261&fm=11&gp=0.jpg"));
-            bannerEntry.add(new BannerEntry("图片3", "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2893917524,3150162972&fm=26&gp=0.jpg", "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2893917524,3150162972&fm=26&gp=0.jpg"));
-            bannerEntry.add(new BannerEntry("图片4", "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555496517010&di=2998a88eb2ac4f7dfefc0e32c1b2c249&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01f65656474f1532f87512f6d45ddc.jpg%402o.jpg", "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555496517010&di=2998a88eb2ac4f7dfefc0e32c1b2c249&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01f65656474f1532f87512f6d45ddc.jpg%402o.jpg"));
-            bannerEntry.add(new BannerEntry("图片5", "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=767588563,3568468044&fm=11&gp=0.jpg", "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=767588563,3568468044&fm=11&gp=0.jpg"));
+            bannerEntry.add(new BannerEntry("图片1", "http://www.baidu.com", "http://d.hiphotos.baidu.com/image/pic/item/6159252dd42a2834a75bb01156b5c9ea15cebf2f.jpg"));
+            bannerEntry.add(new BannerEntry("图片1", "http://www.baidu.com", "http://d.hiphotos.baidu.com/image/pic/item/6159252dd42a2834a75bb01156b5c9ea15cebf2f.jpg"));
+            bannerEntry.add(new BannerEntry("图片1", "http://www.baidu.com", "http://d.hiphotos.baidu.com/image/pic/item/6159252dd42a2834a75bb01156b5c9ea15cebf2f.jpg"));
+            bannerEntry.add(new BannerEntry("图片1", "http://www.baidu.com", "http://d.hiphotos.baidu.com/image/pic/item/6159252dd42a2834a75bb01156b5c9ea15cebf2f.jpg"));
+            bannerEntry.add(new BannerEntry("图片1", "http://www.baidu.com", "http://d.hiphotos.baidu.com/image/pic/item/6159252dd42a2834a75bb01156b5c9ea15cebf2f.jpg"));
             liveBannerViewHolder.banner
                     .delayTime(5)
-                    .build(bannerEntry);
+                    .build(bannerEntry, context);
         }
     }
 

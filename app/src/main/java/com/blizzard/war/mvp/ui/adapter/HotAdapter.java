@@ -1,4 +1,4 @@
-package com.blizzard.war.mvp.ui.adapter.pager;
+package com.blizzard.war.mvp.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -69,7 +69,7 @@ public class HotAdapter extends RecyclerView.Adapter {
             HotItemViewHolder hotItemViewHolder = (HotItemViewHolder) viewHolder;
             Glide.with(context)
                     .load(R.drawable.ic_avatar)
-                    .apply(CommonUtil.GlideInfo())
+                    .apply(CommonUtil.GlideInfo(context))
                     .into(hotItemViewHolder.itemViewImageCover);
         }
     }

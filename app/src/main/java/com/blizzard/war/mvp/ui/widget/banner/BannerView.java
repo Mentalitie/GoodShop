@@ -97,7 +97,7 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
     /**
      * 图片轮播需要传入参数
      */
-    public void build(List<BannerEntry> list) {
+    public void build(List<BannerEntry> list, Context context) {
         destroy();
         if (list.size() == 0) {
             this.setVisibility(GONE);
@@ -132,7 +132,7 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
             ImageView mImageView = new ImageView(getContext());
             Glide.with(getContext())
                     .load(bannerList.get(i).img)
-                    .apply(CommonUtil.GlideInfo())
+                    .apply(CommonUtil.GlideInfo(context))
                     .into(mImageView);
             imageViewList.add(mImageView);
 

@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.blizzard.war.R;
-import com.blizzard.war.mvp.ui.adapter.pager.RegionAdapter;
+import com.blizzard.war.mvp.ui.adapter.RegionAdapter;
 import com.blizzard.war.mvp.contract.RxLazyFragment;
 import com.blizzard.war.utils.SnackbarUtil;
 import com.blizzard.war.mvp.ui.widget.CustomEmptyView;

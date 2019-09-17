@@ -1,4 +1,4 @@
-package com.blizzard.war.mvp.ui.adapter.pager;
+package com.blizzard.war.mvp.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

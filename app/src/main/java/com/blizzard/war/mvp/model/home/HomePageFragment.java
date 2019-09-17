@@ -14,7 +14,7 @@ import android.view.MenuItem;
 
 import com.blizzard.war.mvp.ui.activity.MainActivityRx;
 import com.blizzard.war.R;
-import com.blizzard.war.mvp.ui.adapter.pager.HomePagerAdapter;
+import com.blizzard.war.mvp.ui.adapter.HomePagerAdapter;
 import com.blizzard.war.mvp.contract.RxLazyFragment;
 import com.blizzard.war.mvp.model.game.GameCenterActivityRx;
 import com.blizzard.war.mvp.model.music.MediaPlayRx;

@@ -18,13 +18,18 @@ import com.previewlibrary.loader.IZoomMediaLoader;
 import com.previewlibrary.loader.MySimpleTarget;
 
 public class ImageViewLoader implements IZoomMediaLoader {
+    private Context mContext;
+
+    public ImageViewLoader(Context context) {
+        mContext = context;
+    }
 
     @Override
     public void displayImage(Fragment context, String path, ImageView imageView, final MySimpleTarget simpleTarget) {
         Glide.with(context)
                 .asBitmap()
                 .load(path)
-                .apply(CommonUtil.GlideInfo())
+                .apply(CommonUtil.GlideInfo(mContext))
                 .listener(new RequestListener<Bitmap>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
@@ -46,7 +51,7 @@ public class ImageViewLoader implements IZoomMediaLoader {
         Glide.with(context)
                 .asGif()
                 .load(path)
-                .apply(CommonUtil.GlideInfo())
+                .apply(CommonUtil.GlideInfo(mContext))
                 .listener(new RequestListener<GifDrawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
