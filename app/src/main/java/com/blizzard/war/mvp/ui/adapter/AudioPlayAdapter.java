@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  * @date: 2019/4/29 15:30
  */
 
-public class MediaPlayAdapter extends RecyclerView.Adapter {
+public class AudioPlayAdapter extends RecyclerView.Adapter {
     private Context context;
     private SelectItem mSelectItem;
     private int mPosition;
@@ -35,7 +35,7 @@ public class MediaPlayAdapter extends RecyclerView.Adapter {
     // banner 模型
     private List<JSONObject> musicList;
 
-    public MediaPlayAdapter(Context context, List<JSONObject> list) {
+    public AudioPlayAdapter(Context context, List<JSONObject> list) {
         this.context = context;
         this.musicList = list;
     }
@@ -53,7 +53,7 @@ public class MediaPlayAdapter extends RecyclerView.Adapter {
             MusicListViewHolder musicListViewHolder = (MusicListViewHolder) viewHolder;
             try {
                 File file = new File(musicList.get(i).getString("url"));
-                musicListViewHolder.itemText.setText(String.valueOf(i + 1) + ". " + file.getName());
+                musicListViewHolder.itemText.setText(file.getName());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -74,7 +74,7 @@ public class MediaPlayAdapter extends RecyclerView.Adapter {
         return 1;
     }
 
-    public void  setViewBackColor() {
+    public void setViewBackColor() {
 
     }
 

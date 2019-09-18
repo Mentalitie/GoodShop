@@ -51,40 +51,45 @@ public class AudioPlayService {
     }
 
     public void play() {
-        if (player == null) player = new MediaPlayer();//实例化一个多媒体对象
+        new Thread() {
+            @Override
+            public void run() {
+                if (player == null) player = new MediaPlayer();//实例化一个多媒体对象
 
-        if (!player.isPlaying()) {
-            try {
-                player.reset(); //重置多媒体
-                player.setLooping(isLoopIng);
-                if (timer != null) {
-                    timer.cancel();
-                    timer = null;
-                }
-                String dataSource = musicList.get(songNum).getString("url");//得到当前播放音乐的路径
-                setPlayName(dataSource);//截取歌名
-                // 指定参数为音频文件
-                player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                player.setDataSource(dataSource);//为多媒体对象设置播放路径
-                player.prepare();//准备播放
-                player.start();//开始播放
-                isPause = false;
-                jsonObject = new JSONObject();
-                jsonObject.put("songName", songName);
-                jsonObject.put("duration", Long.parseLong(musicList.get(songNum).getString("duration")));
-                mPlayerListener.isChangePlay(jsonObject);
-                SeedPlayMsg();
-                if (!isLoopIng) {
-                    player.setOnCompletionListener(arg0 -> {
-                        isPlayComplete = true;
-                        next();//如果当前歌曲播放完毕,自动播放下一首.
-                    });
-                }
+                if (!player.isPlaying()) {
+                    try {
+                        player.reset(); //重置多媒体
+                        player.setLooping(isLoopIng);
+                        if (timer != null) {
+                            timer.cancel();
+                            timer = null;
+                        }
+                        String dataSource = musicList.get(songNum).getString("url");//得到当前播放音乐的路径
+                        setPlayName(dataSource);//截取歌名
+                        // 指定参数为音频文件
+                        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                        player.setDataSource(dataSource);//为多媒体对象设置播放路径
+                        player.prepare();//准备播放
+                        player.start();//开始播放
+                        isPause = false;
+                        jsonObject = new JSONObject();
+                        jsonObject.put("songName", songName);
+                        jsonObject.put("duration", Long.parseLong(musicList.get(songNum).getString("duration")));
+                        mPlayerListener.isChangePlay(jsonObject);
+                        SendPlayMsg();
+                        if (!isLoopIng) {
+                            player.setOnCompletionListener(arg0 -> {
+                                isPlayComplete = true;
+                                next();//如果当前歌曲播放完毕,自动播放下一首.
+                            });
+                        }
 
-            } catch (Exception e) {
-                System.out.println("MusicService: " + e.getMessage());
+                    } catch (Exception e) {
+                        System.out.println("MusicService: " + e.getMessage());
+                    }
+                }
             }
-        }
+        }.start();
     }
 
     // 获取当前进度
@@ -154,7 +159,6 @@ public class AudioPlayService {
                 songNum = new Random().nextInt(musicList.size() - 1);
             }
         }
-
         stop();
         play();
     }
@@ -165,7 +169,7 @@ public class AudioPlayService {
         String[] projection = null; // 这个参数代表要从表中选择的列，用一个String数组来表示。
         String selection = null;    // 相当于SQL语句中的where子句，就是代表你的查询条件。
         String[] selectionArgs = null;  // 这个参数是说你的Selections里有？这个符号是，这里可以以实际值代替这个问号。如果Selections这个没有？的话，那么这个String数组可以为null。
-        String sortOrder = MediaStore.Audio.Media.DEFAULT_SORT_ORDER;   // 排序
+        String sortOrder = MediaStore.Audio.Media._ID;   // 排序
         Cursor cursor = contentResolver.query(uri, projection, selection, selectionArgs, sortOrder);
 
         while (cursor.moveToNext()) {
@@ -203,7 +207,7 @@ public class AudioPlayService {
         return musicList;
     }
 
-    public void SeedPlayMsg() {
+    public void SendPlayMsg() {
         if (timer == null) {
             System.out.println("创建timer对象");
             timer = new Timer();//timer就是开启子线程执行任务，与纯粹的子线城不同的是可以控制子线城执行的时间，

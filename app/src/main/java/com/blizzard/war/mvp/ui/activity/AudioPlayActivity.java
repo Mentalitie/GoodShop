@@ -28,7 +28,7 @@ import android.widget.TextView;
 
 import com.blizzard.war.R;
 import com.blizzard.war.mvp.contract.RxBaseActivity;
-import com.blizzard.war.mvp.ui.adapter.MediaPlayAdapter;
+import com.blizzard.war.mvp.ui.adapter.AudioPlayAdapter;
 import com.blizzard.war.mvp.ui.widget.CircleProgressView;
 import com.blizzard.war.service.AudioPlayService;
 import com.blizzard.war.service.HeadsetReceiver;
@@ -75,7 +75,8 @@ public class AudioPlayActivity extends RxBaseActivity {
     @BindView(R.id.media_load_error)
     LinearLayout mMusicError;
 
-    private MediaPlayAdapter mediaPlayAdapter;
+    private AudioPlayAdapter audioPlayAdapter;
+    private AudioPlayService audioPlayService;
     private HeadsetReceiver receiver;
     private NotificationReceiver mNotificationReceiver;
     private MediaPlayer player;
@@ -84,11 +85,9 @@ public class AudioPlayActivity extends RxBaseActivity {
     private int seekToInt;
     private Boolean isSeekBarTouch;
     private List<JSONObject> musicList;
-    private AudioPlayService audioPlayService;
-    final Handler musicHandler = new Handler();
+    private final Handler musicHandler = new Handler();
 
     public static MediaSession.Token CREATOR;
-
     private final String MUSIC_PREV_FILTER = "MUSIC_PREV_FILTER";
     private final String MUSIC_START_FILTER = "MUSIC_START_FILTER";
     private final String MUSIC_PAUSE_FILTER = "MUSIC_PAUSE_FILTER";
@@ -115,7 +114,7 @@ public class AudioPlayActivity extends RxBaseActivity {
         mToolTitle.setText("音乐中心");
         showProgressBar();
     }
-    
+
     private void initData() {
 //        receiver = new HeadsetReceiver();
 //        IntentFilter intentFilter = new IntentFilter();
@@ -135,41 +134,34 @@ public class AudioPlayActivity extends RxBaseActivity {
 ////            ToastUtil.show(s);
 //        });
 
-        new Thread() {
+        audioPlayService = new AudioPlayService();
+        musicList = audioPlayService.getAudioList();//实例化一个List链表数组
+        audioPlayService.setPlayerListener(new AudioPlayService.PlayerListener() {
             @Override
-            public void run() {
-                //这里写入子线程需要做的工作
-                audioPlayService = new AudioPlayService();
-                musicList = audioPlayService.getAudioList();//实例化一个List链表数组
-                audioPlayService.setPlayerListener(new AudioPlayService.PlayerListener() {
-                    @Override
-                    public void isChangePlay(JSONObject s) {
-                        try {
-                            player = audioPlayService.getPlayer();
-                            isSeekBarTouch = false;
-                            mMusicNowText.setText(s.getString("songName"));
-                            startDuration = DateUtil.getDuration(0);
-                            endDuration = DateUtil.getDuration(s.getLong("duration"));
-                            mMusicNowTime.setText(startDuration + "/" + endDuration);
-                            mMusicSeekBar.setMax(s.getInt("duration"));
-                            setNotification();
-                            System.out.println("更新歌曲");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void isReadChange() {
-                        System.out.println("player.getCurrentPosition()" + player.getCurrentPosition());
-                        if (!isSeekBarTouch && mMusicSeekBar != null)
-                            mMusicSeekBar.setProgress(player.getCurrentPosition());
-                    }
-                });
-                musicHandler.post(() -> hideProgressBar());
-                mMusicSeekBar.setOnSeekBarChangeListener(new onSeekChange());
+            public void isChangePlay(JSONObject s) {
+                try {
+                    player = audioPlayService.getPlayer();
+                    isSeekBarTouch = false;
+                    mMusicNowText.setText(s.getString("songName"));
+                    startDuration = DateUtil.getDuration(0);
+                    endDuration = DateUtil.getDuration(s.getLong("duration"));
+                    mMusicNowTime.setText(startDuration + "/" + endDuration);
+                    mMusicSeekBar.setMax(s.getInt("duration"));
+                    setNotification();
+                    System.out.println("更新歌曲");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        }.start();
+
+            @Override
+            public void isReadChange() {
+                if (!isSeekBarTouch && mMusicSeekBar != null)
+                    mMusicSeekBar.setProgress(player.getCurrentPosition());
+            }
+        });
+        musicHandler.post(() -> hideProgressBar());
+        mMusicSeekBar.setOnSeekBarChangeListener(new onSeekChange());
     }
 
     private void initError() {
@@ -265,9 +257,9 @@ public class AudioPlayActivity extends RxBaseActivity {
 
     @Override
     public void hideProgressBar() {
-        mediaPlayAdapter = new MediaPlayAdapter(this, musicList);
-        mRecyclerView.setAdapter(mediaPlayAdapter);
-        mediaPlayAdapter.setSelectItem((view, i) -> {
+        audioPlayAdapter = new AudioPlayAdapter(this, musicList);
+        mRecyclerView.setAdapter(audioPlayAdapter);
+        audioPlayAdapter.setSelectItem((view, i) -> {
             if (i != audioPlayService.getSongNum()) {
                 audioPlayService.stop();
                 audioPlayService.setSongNum(i);
@@ -285,7 +277,7 @@ public class AudioPlayActivity extends RxBaseActivity {
         layout.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int i) {
-                return mediaPlayAdapter.getSpanSize(i);
+                return audioPlayAdapter.getSpanSize(i);
             }
         });
         mRecyclerView.setLayoutManager(layout);

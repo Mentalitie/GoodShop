@@ -52,6 +52,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:minHeight="@dimen/dp40"
         android:orientation="horizontal"
         android:paddingTop="@dimen/dp5"
@@ -60,10 +61,9 @@
         <TextView
             android:id="@+id/item_music_now_play"
             android:layout_width="@dimen/dp0"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:gravity="center_vertical"
             android:maxLines="1"
             android:paddingLeft="@dimen/dp20"
             android:paddingRight="@dimen/dp20"
@@ -71,10 +71,11 @@
 
         <TextView
             android:id="@+id/item_music_now_time"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingRight="@dimen/dp20"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp20"
+            android:layout_weight="0.5"
+            android:gravity="right"
             android:textColor="@color/text_gray" />
     </LinearLayout>
 
