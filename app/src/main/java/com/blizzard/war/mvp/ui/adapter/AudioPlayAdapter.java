@@ -12,7 +12,6 @@ import com.blizzard.war.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,8 +51,7 @@ public class AudioPlayAdapter extends RecyclerView.Adapter {
         if (viewHolder instanceof MusicListViewHolder) {
             MusicListViewHolder musicListViewHolder = (MusicListViewHolder) viewHolder;
             try {
-                File file = new File(musicList.get(i).getString("url"));
-                musicListViewHolder.itemText.setText(file.getName());
+                musicListViewHolder.itemText.setText(musicList.get(i).getString("song_name"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

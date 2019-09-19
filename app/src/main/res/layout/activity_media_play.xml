@@ -74,7 +74,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp20"
-            android:layout_weight="0.5"
+            android:layout_weight="0.2"
             android:gravity="right"
             android:textColor="@color/text_gray" />
     </LinearLayout>

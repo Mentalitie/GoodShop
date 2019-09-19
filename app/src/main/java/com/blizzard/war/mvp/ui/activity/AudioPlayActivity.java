@@ -27,6 +27,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.blizzard.war.R;
+import com.blizzard.war.app.BiliApplication;
 import com.blizzard.war.mvp.contract.RxBaseActivity;
 import com.blizzard.war.mvp.ui.adapter.AudioPlayAdapter;
 import com.blizzard.war.mvp.ui.widget.CircleProgressView;
@@ -78,7 +79,6 @@ public class AudioPlayActivity extends RxBaseActivity {
     private AudioPlayAdapter audioPlayAdapter;
     private AudioPlayService audioPlayService;
     private HeadsetReceiver receiver;
-    private NotificationReceiver mNotificationReceiver;
     private MediaPlayer player;
     private String startDuration;
     private String endDuration;
@@ -86,12 +86,6 @@ public class AudioPlayActivity extends RxBaseActivity {
     private Boolean isSeekBarTouch;
     private List<JSONObject> musicList;
     private final Handler musicHandler = new Handler();
-
-    public static MediaSession.Token CREATOR;
-    private final String MUSIC_PREV_FILTER = "MUSIC_PREV_FILTER";
-    private final String MUSIC_START_FILTER = "MUSIC_START_FILTER";
-    private final String MUSIC_PAUSE_FILTER = "MUSIC_PAUSE_FILTER";
-    private final String MUSIC_NEXT_FILTER = "MUSIC_NEXT_FILTER";
 
     @Override
     public int getLayoutId() {
@@ -133,12 +127,11 @@ public class AudioPlayActivity extends RxBaseActivity {
 //            }
 ////            ToastUtil.show(s);
 //        });
-
-        audioPlayService = new AudioPlayService();
+        audioPlayService = MainActivity.getAudioPlayService();
         musicList = audioPlayService.getAudioList();//实例化一个List链表数组
-        audioPlayService.setPlayerListener(new AudioPlayService.PlayerListener() {
+        MainActivity.setNotifiChangeListener(new MainActivity.NotifiChangeListener() {
             @Override
-            public void isChangePlay(JSONObject s) {
+            public void isChange(JSONObject s) {
                 try {
                     player = audioPlayService.getPlayer();
                     isSeekBarTouch = false;
@@ -147,7 +140,6 @@ public class AudioPlayActivity extends RxBaseActivity {
                     endDuration = DateUtil.getDuration(s.getLong("duration"));
                     mMusicNowTime.setText(startDuration + "/" + endDuration);
                     mMusicSeekBar.setMax(s.getInt("duration"));
-                    setNotification();
                     System.out.println("更新歌曲");
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -155,9 +147,10 @@ public class AudioPlayActivity extends RxBaseActivity {
             }
 
             @Override
-            public void isReadChange() {
-                if (!isSeekBarTouch && mMusicSeekBar != null)
+            public void isSeedChange() {
+                if (!isSeekBarTouch && mMusicSeekBar != null) {
                     mMusicSeekBar.setProgress(player.getCurrentPosition());
+                }
             }
         });
         musicHandler.post(() -> hideProgressBar());
@@ -218,7 +211,9 @@ public class AudioPlayActivity extends RxBaseActivity {
                 showContacts();
                 break;
         }
-        ToastUtil.show(s);
+        if (!s.equals("")) {
+            ToastUtil.show(s);
+        }
     }
 
 
@@ -285,123 +280,13 @@ public class AudioPlayActivity extends RxBaseActivity {
         mCircleProgressView.stopSpinning();
         mRecyclerView.setVisibility(View.VISIBLE);
         mMusicError.setVisibility(View.GONE);
-        setNotification();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (receiver != null) unregisterReceiver(receiver);
-        if (mNotificationReceiver != null) unregisterReceiver(mNotificationReceiver);
         audioPlayService.stop();
-    }
-
-    private String getContentText() {
-        return audioPlayService.getSongName();
-    }
-
-    /**
-     * 自定义通知栏
-     */
-
-    private void setNotification() {
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        String id = "my_channel_01";
-        String name = "biliBili";
-        Notification notification;
-        PendingIntent pendingIntent;
-
-        Intent resultIntent = new Intent(this, AudioPlayActivity.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel mChannel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_LOW);
-            manager.createNotificationChannel(mChannel);
-
-            pendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(MUSIC_PREV_FILTER), PendingIntent.FLAG_UPDATE_CURRENT);
-            Notification.Action prev = new Notification.Action.Builder(
-                    Icon.createWithResource(this, R.drawable.ic_music_prev),
-                    "prev",
-                    pendingIntent).build();
-
-            pendingIntent = PendingIntent.getBroadcast(this, 1, new Intent(MUSIC_START_FILTER), PendingIntent.FLAG_UPDATE_CURRENT);
-            Notification.Action start = new Notification.Action.Builder(
-                    Icon.createWithResource(this, R.drawable.ic_music_start),
-                    "start",
-                    pendingIntent).build();
-
-            pendingIntent = PendingIntent.getBroadcast(this, 2, new Intent(MUSIC_PAUSE_FILTER), PendingIntent.FLAG_UPDATE_CURRENT);
-            Notification.Action pause = new Notification.Action.Builder(
-                    Icon.createWithResource(this, R.drawable.ic_music_pause),
-                    "pause",
-                    pendingIntent).build();
-
-            pendingIntent = PendingIntent.getBroadcast(this, 3, new Intent(MUSIC_NEXT_FILTER), PendingIntent.FLAG_UPDATE_CURRENT);
-            Notification.Action next = new Notification.Action.Builder(
-                    Icon.createWithResource(this, R.drawable.ic_music_next),
-                    "next",
-                    pendingIntent).build();
-
-            Notification.MediaStyle style = new Notification.MediaStyle();
-            style.setShowActionsInCompactView(1, 2, 3);
-            style.setMediaSession(CREATOR);
-
-            notification = new Notification.Builder(this, id)
-                    .setContentTitle("酷狗音乐")
-                    .setContentText(getContentText())
-                    .setContentIntent(PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT))
-                    .setSmallIcon(R.drawable.ic_avatar)
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_avatar))
-                    .addAction(prev)
-                    .addAction(start)
-                    .addAction(pause)
-                    .addAction(next)
-                    .setOngoing(true)
-                    .setStyle(style)
-                    .build();
-
-            if (mNotificationReceiver == null) {
-                IntentFilter intentFilter = new IntentFilter();
-                mNotificationReceiver = new NotificationReceiver();
-                intentFilter.addAction(MUSIC_PREV_FILTER);
-                intentFilter.addAction(MUSIC_START_FILTER);
-                intentFilter.addAction(MUSIC_PAUSE_FILTER);
-                intentFilter.addAction(MUSIC_NEXT_FILTER);
-                registerReceiver(mNotificationReceiver, intentFilter);
-                mNotificationReceiver.setNotification(i -> {
-                    String s = i;
-                    if (i.equals(MUSIC_PREV_FILTER)) {
-                        s = "通知栏：上一首";
-                        audioPlayService.prev();
-                    } else if (i.equals(MUSIC_START_FILTER)) {
-                        if (audioPlayService.isPause()) {
-                            s = "通知栏：继续";
-                            audioPlayService.goPlay();
-                        } else {
-                            s = "通知栏：开始";
-                            audioPlayService.play();
-                        }
-                    } else if (i.equals(MUSIC_PAUSE_FILTER)) {
-                        s = "通知栏：暂停";
-                        audioPlayService.pause();
-                    } else if (i.equals(MUSIC_NEXT_FILTER)) {
-                        s = "通知栏：下一首";
-
-                        audioPlayService.next();
-                    }
-                    ToastUtil.show(s);
-                });
-            }
-
-        } else {
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, id)
-                    .setContentTitle("2 new messages")
-                    .setContentText("hahaha")
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setOngoing(true)
-                    .setPriority(NotificationCompat.PRIORITY_MAX);//设置最大优先级
-            notification = notificationBuilder.build();
-        }
-        manager.notify(1, notification);
-
     }
 
     private static final int READ_PHONE_STATE = 100;

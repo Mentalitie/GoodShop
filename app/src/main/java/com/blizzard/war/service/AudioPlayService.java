@@ -2,7 +2,6 @@ package com.blizzard.war.service;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -43,11 +42,12 @@ public class AudioPlayService {
     private Timer timer;
     private JSONObject jsonObject;
 
-    private void setPlayName(String dataSource) {
-        File file = new File(dataSource);//假设为D:\\dd.mp3
-        String name = file.getName();//name=dd.mp3
-        int index = name.lastIndexOf(".");//找到最后一个 .
-        songName = name.substring(0, index);//截取为dd
+    private void setPlayName() {
+        try {
+            songName = musicList.get(songNum).getString("song_name");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void play() {
@@ -65,9 +65,9 @@ public class AudioPlayService {
                             timer = null;
                         }
                         String dataSource = musicList.get(songNum).getString("url");//得到当前播放音乐的路径
-                        setPlayName(dataSource);//截取歌名
+                        setPlayName();//截取歌名
                         // 指定参数为音频文件
-                        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//                        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
                         player.setDataSource(dataSource);//为多媒体对象设置播放路径
                         player.prepare();//准备播放
                         player.start();//开始播放
@@ -183,7 +183,24 @@ public class AudioPlayService {
                 String album = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));    // 获取音频专辑名
                 String year = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR));    // 获取音频发行日期
                 String artist = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));   // 获取音频歌手名
-                String display_name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME));  // 获取音频文件的名称
+                String display_name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)).replaceAll(" ", "");  // 获取音频文件的名称
+                String song_name = new File(url).getName();
+
+                if (song_name.contains("-")) {
+                    song_name = song_name.substring(0, song_name.lastIndexOf("."));
+                    if (song_name.contains(" -")) {
+                        song_name = song_name.substring(0, song_name.indexOf(" -")) + " - " + song_name.substring(song_name.indexOf("- ") + 2);
+                    } else {
+                        song_name = song_name.substring(0, song_name.indexOf("-")) + " - " + song_name.substring(song_name.indexOf("-") + 1);
+                    }
+                } else {
+                    song_name = artist + " - ";
+                    if (title.lastIndexOf("-") == -1) {
+                        song_name += title;
+                    } else {
+                        song_name += title.substring(0, title.lastIndexOf("-"));
+                    }
+                }
 
                 jsonObject.put("duration", duration);
                 jsonObject.put("size", size);
@@ -194,6 +211,7 @@ public class AudioPlayService {
                 jsonObject.put("year", year);
                 jsonObject.put("artist", artist);
                 jsonObject.put("display_name", display_name);
+                jsonObject.put("song_name", song_name);
 
                 if (duration / 1000 > 30) {
                     musicList.add(jsonObject);
@@ -204,6 +222,7 @@ public class AudioPlayService {
             }
         }
         cursor.close();
+        setPlayName();
         return musicList;
     }
 
