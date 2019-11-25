@@ -155,6 +155,6 @@ public class LoginActivity extends RxBaseActivity {
             animator.start();
             return;
         }
-        JumpFinish(this, MainActivity.class);
+        JumpFinish(this, MainActivity.class, true);
     }
 }

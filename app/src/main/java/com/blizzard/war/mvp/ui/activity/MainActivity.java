@@ -406,7 +406,6 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
                             break;
                         case MUSIC_CANCEL_FILTER:
                             s = "通知栏：关闭";
-                            unregisterReceiver(mNotificationReceiver);
                             finish();
                             break;
                     }
