@@ -140,7 +140,7 @@ public class RegisterActivity extends RxBaseActivity {
             return;
         }
         LoadingShow(this);
-        handler.postDelayed(() -> JumpFinish(RegisterActivity.this, MainActivity.class, true), 2000);
+        handler.postDelayed(() -> JumpFinish(RegisterActivity.this, MainActivity.class), 2000);
     }
 
 }

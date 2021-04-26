@@ -80,4 +80,12 @@ dependencies {
     implementation 'com.android.support:support-fragment:28.0.0'
     implementation 'com.android.support:support-core-utils:28.0.0'
 
+    //JSON 工具
+    implementation files('/Users/ma/Desktop/java/lib/commons-beanutils.jar')
+    implementation files('/Users/ma/Desktop/java/lib/commons-collections-3.0.jar')
+    implementation files('/Users/ma/Desktop/java/lib/commons-lang-2.1.jar')
+    implementation files('/Users/ma/Desktop/java/lib/commons-logging.jar')
+    implementation files('/Users/ma/Desktop/java/lib/ezmorph-1.0.2.jar')
+    implementation files('/Users/ma/Desktop/java/lib/json-lib-1.1-jdk13.jar')
+
 }

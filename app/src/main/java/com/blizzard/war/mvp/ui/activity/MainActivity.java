@@ -30,11 +30,13 @@ import com.blizzard.war.mvp.model.favourite.FavouriteFragment;
 import com.blizzard.war.mvp.model.group.GroupFragment;
 import com.blizzard.war.mvp.model.history.HistoryFragment;
 import com.blizzard.war.mvp.model.home.HomePageFragment;
+import com.blizzard.war.mvp.model.read.ReadFragment;
 import com.blizzard.war.mvp.model.setting.SettingFragment;
 import com.blizzard.war.mvp.model.tracker.TrackerFragment;
 import com.blizzard.war.mvp.ui.widget.CircleImageView;
 import com.blizzard.war.service.AudioPlayService;
 import com.blizzard.war.service.NotificationReceiver;
+import com.blizzard.war.utils.CommonUtil;
 import com.blizzard.war.utils.ConstantUtil;
 import com.blizzard.war.utils.PreferenceUtil;
 import com.blizzard.war.utils.ToastUtil;
@@ -68,7 +70,9 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
     private DownloadFragment mDownloadFragment;
     private HistoryFragment mHistoryFragment;
     private SettingFragment mSettingFragment;
+    private ReadFragment mReadFragment;
     private MenuItem menuItem;
+    private View headerView;
 
     public static MediaSession.Token CREATOR;
     private final String MUSIC_PREV_FILTER = "MUSIC_PREV_FILTER";
@@ -79,6 +83,7 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
     private NotificationReceiver mNotificationReceiver;
     private static AudioPlayService audioPlayService;
     private static NotifiChangeListener mNotifiChangeListener;
+    private Boolean isServeLive = false;
 
     @Override
     public int getLayoutId() {
@@ -107,6 +112,7 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
         mDownloadFragment = DownloadFragment.newInstance();
         mHistoryFragment = HistoryFragment.newInstance();
         mSettingFragment = SettingFragment.newInstance();
+        mReadFragment = ReadFragment.newInstance();
 
 
         fragments = new Fragment[]{
@@ -116,7 +122,8 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
                 mTrackerFragment,
                 mDownloadFragment,
                 mHistoryFragment,
-                mSettingFragment
+                mSettingFragment,
+                mReadFragment
         };
         // 添加显示第一个fragment
         getSupportFragmentManager()
@@ -131,7 +138,7 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
     private void initNavigationView() {
         mNavigationView.setNavigationItemSelectedListener(this);
         menuItem = mNavigationView.getMenu().getItem(0);
-        View headerView = mNavigationView.getHeaderView(0);
+        headerView = mNavigationView.getHeaderView(0);
         CircleImageView mUserAvatarView = headerView.findViewById(R.id.user_avatar_view);
         TextView mUserName = headerView.findViewById(R.id.user_name);
         TextView mUserSign = headerView.findViewById(R.id.user_other_info);
@@ -154,8 +161,8 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
         audioPlayService.setPlayerListener(new AudioPlayService.PlayerListener() {
             @Override
             public void isChangePlay(JSONObject s) {
-                mNotifiChangeListener.isChange(s);
                 setNotification();
+                mNotifiChangeListener.isChange(s);
             }
 
             @Override
@@ -197,6 +204,14 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
             case R.id.item_settings:
                 // 设置中心
                 changeFragmentIndex(item, 6);
+                return true;
+            // 阅读
+            case R.id.item_read:
+                changeFragmentIndex(item, 7);
+                return true;
+            // 视频
+            case R.id.item_video:
+                CommonUtil.JumpTo(VideoPlayActivity.class);
                 return true;
         }
         return false;
@@ -300,8 +315,8 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
 
     @Override
     protected void onDestroy() {
+        if (isServeLive) unregisterReceiver(mNotificationReceiver);
         super.onDestroy();
-        if (mNotificationReceiver != null) unregisterReceiver(mNotificationReceiver);
     }
 
     /**
@@ -371,7 +386,9 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
                     .setStyle(style)
                     .build();
 
-            if (mNotificationReceiver == null) {
+            if (!isServeLive) {
+                System.out.println("已注册");
+                isServeLive = true;
                 IntentFilter intentFilter = new IntentFilter();
                 mNotificationReceiver = new NotificationReceiver();
                 intentFilter.addAction(MUSIC_PREV_FILTER);
@@ -406,6 +423,9 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
                             break;
                         case MUSIC_CANCEL_FILTER:
                             s = "通知栏：关闭";
+                            isServeLive = false;
+                            manager.cancel(1);
+                            unregisterReceiver(mNotificationReceiver);
                             finish();
                             break;
                     }

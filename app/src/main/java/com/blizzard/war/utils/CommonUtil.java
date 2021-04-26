@@ -2,6 +2,7 @@ package com.blizzard.war.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.StatFs;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.blizzard.war.R;
@@ -20,6 +22,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import static com.blizzard.war.utils.DisplayUtil.dp2px;
 
@@ -203,6 +206,8 @@ public class CommonUtil {
         in = new Intent(context, cls);
         if (bole) {
             in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // 关闭所以activity 并把指定栈置顶
+        } else {
+            in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -211,6 +216,8 @@ public class CommonUtil {
                 activity.finish();
             }
         }, 50);
+
+
     }
 
     /**

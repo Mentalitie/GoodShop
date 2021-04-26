@@ -46,7 +46,7 @@ public class SplashActivity extends RxActivity {
 
 
     private void finishTask() {
-        JumpFinish(SplashActivity.this, MainActivity.class, true);
+        JumpFinish(SplashActivity.this, MainActivity.class);
     }
 
 

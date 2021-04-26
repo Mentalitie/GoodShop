@@ -16,7 +16,6 @@ import com.blizzard.war.mvp.ui.activity.GameCenterActivity;
 import com.blizzard.war.mvp.ui.activity.MainActivity;
 import com.blizzard.war.R;
 import com.blizzard.war.mvp.ui.activity.AudioPlayActivity;
-import com.blizzard.war.mvp.ui.activity.VideoPlayActivity;
 import com.blizzard.war.mvp.ui.adapter.HomePagerAdapter;
 import com.blizzard.war.mvp.contract.RxLazyFragment;
 import com.blizzard.war.utils.CommonUtil;
@@ -82,7 +81,6 @@ public class HomePageFragment extends RxLazyFragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
 //                TotalStationSearchActivity.launch(getActivity(), query);
-                CommonUtil.JumpTo(VideoPlayActivity.class);
                 return false;
             }
 

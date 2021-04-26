@@ -198,7 +198,7 @@ public class LoginActivity extends RxBaseActivity {
                     Manifest.permission.CHANGE_WIFI_STATE
             }, READ_PHONE_STATE);
         } else {
-            JumpFinish(this, MainActivity.class, true);
+            JumpFinish(this, MainActivity.class);
         }
     }
 
@@ -212,7 +212,7 @@ public class LoginActivity extends RxBaseActivity {
                 if (grantResults[1] == PackageManager.PERMISSION_DENIED) {
                 
                 } else {
-                    JumpFinish(this, MainActivity.class, true);
+                    JumpFinish(this, MainActivity.class);
                 }
                 break;
             default:

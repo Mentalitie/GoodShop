@@ -181,5 +181,11 @@ public class VideoPlayActivity extends RxBaseActivity {
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        if (player != null) {
+            player.stop();
+        }
+        super.onDestroy();
+    }
 }

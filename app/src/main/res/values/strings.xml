@@ -71,6 +71,8 @@
     <string name="item_downloaded">离线缓存</string>
     <string name="item_history">历史记录</string>
     <string name="item_settings">设置与帮助</string>
+    <string name="item_read">阅读</string>
+    <string name="item_video">视频</string>
 
     <!--App 介绍-->
     <string name="about_user_head_layout">硬币: 47</string>

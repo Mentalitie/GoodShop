@@ -20,6 +20,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,6 +36,7 @@ import com.blizzard.war.service.AudioPlayService;
 import com.blizzard.war.service.HeadsetReceiver;
 import com.blizzard.war.service.NotificationReceiver;
 import com.blizzard.war.utils.DateUtil;
+import com.blizzard.war.utils.DoubleClickUtil;
 import com.blizzard.war.utils.ToastUtil;
 
 import org.json.JSONException;
@@ -61,6 +63,8 @@ public class AudioPlayActivity extends RxBaseActivity {
     ImageView mBackIcon;
     @BindView(R.id.layout_close_icon)
     ImageView mCloseIcon;
+    @BindView(R.id.layout_toolbar)
+    Toolbar mToolBar;
     @BindView(R.id.layout_tool_title)
     TextView mToolTitle;
     @BindView(R.id.circle_progress)
@@ -107,6 +111,12 @@ public class AudioPlayActivity extends RxBaseActivity {
         mBackIcon.setVisibility(View.VISIBLE);
         mToolTitle.setText("音乐中心");
         showProgressBar();
+        mToolBar.setOnClickListener(new DoubleClickUtil() {
+            @Override
+            public void onDoubleClick(View v) {
+                mRecyclerView.smoothScrollToPosition(0);
+            }
+        });
     }
 
     private void initData() {
@@ -182,11 +192,11 @@ public class AudioPlayActivity extends RxBaseActivity {
                 break;
             case R.id.item_music_next:
                 s = "下一首";
-                audioPlayService.prev();
+                audioPlayService.next();
                 break;
             case R.id.item_music_prev:
                 s = "上一首";
-                audioPlayService.next();
+                audioPlayService.prev();
                 break;
             case R.id.item_music_stop:
                 s = "停止播放";
