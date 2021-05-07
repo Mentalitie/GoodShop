@@ -32,7 +32,6 @@ public class AudioPlayService {
     private List<Integer> prevSongNum = new ArrayList<>(); // 上一首歌曲记忆位置
     private String songName;// 当前播放歌曲名
     private boolean isPause;// 判断是从暂停中恢复还是重新播放
-    private boolean isLoopIng = false;
     private boolean isPlayComplete;
     private int listenerModel = 1; // 设置播放模式
 
@@ -59,7 +58,7 @@ public class AudioPlayService {
                 if (!player.isPlaying()) {
                     try {
                         player.reset(); //重置多媒体
-                        player.setLooping(isLoopIng);
+                        player.setLooping(listenerModel == 2);
                         if (timer != null) {
                             timer.cancel();
                             timer = null;
@@ -72,18 +71,17 @@ public class AudioPlayService {
                         player.prepare();//准备播放
                         player.start();//开始播放
                         isPause = false;
-                        jsonObject = new JSONObject();
-                        jsonObject.put("songName", songName);
-                        jsonObject.put("duration", Long.parseLong(musicList.get(songNum).getString("duration")));
-                        mPlayerListener.isChangePlay(jsonObject);
-                        SendPlayMsg();
-                        if (!isLoopIng) {
+                        if (listenerModel != 2) {
                             player.setOnCompletionListener(arg0 -> {
                                 isPlayComplete = true;
                                 next();//如果当前歌曲播放完毕,自动播放下一首.
                             });
                         }
-
+                        jsonObject = new JSONObject();
+                        jsonObject.put("songName", songName);
+                        jsonObject.put("duration", Long.parseLong(musicList.get(songNum).getString("duration")));
+                        mPlayerListener.isChangePlay(jsonObject);
+                        SendPlayMsg();
                     } catch (Exception e) {
                         System.out.println("MusicService: " + e.getMessage());
                     }
@@ -134,30 +132,36 @@ public class AudioPlayService {
         }
     }
 
-    //下一首
-    public void next() {
-        if (listenerModel == 0) {
-            songNum = songNum == musicList.size() - 1 ? 0 : songNum + 1;
-        } else {
-            songNum = new Random().nextInt(musicList.size() - 1);
-            prevSongNum.add(songNum);
+    //上一首
+    public void prev() {
+        switch (listenerModel) {
+            case 0:
+                songNum = songNum == 0 ? musicList.size() - 1 : songNum - 1;
+                break;
+            case 1:
+                if (prevSongNum.size() > 1) {
+                    prevSongNum.remove(prevSongNum.size() - 1);
+                    songNum = prevSongNum.get(prevSongNum.size() - 1);
+                } else {
+                    prevSongNum.clear();
+                    songNum = new Random().nextInt(musicList.size() - 1);
+                }
+                break;
         }
         stop();
         play();
     }
 
-    //上一首
-    public void prev() {
-        if (listenerModel == 0) {
-            songNum = songNum == 0 ? musicList.size() - 1 : songNum - 1;
-        } else {
-            if (prevSongNum.size() > 1) {
-                prevSongNum.remove(prevSongNum.size() - 1);
-                songNum = prevSongNum.get(prevSongNum.size() - 1);
-            } else {
-                prevSongNum.clear();
+    //下一首
+    public void next() {
+        switch (listenerModel) {
+            case 0:
+                songNum = songNum == musicList.size() - 1 ? 0 : songNum + 1;
+                break;
+            case 1:
                 songNum = new Random().nextInt(musicList.size() - 1);
-            }
+                prevSongNum.add(songNum);
+                break;
         }
         stop();
         play();
@@ -234,7 +238,6 @@ public class AudioPlayService {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println(isPlayComplete);
                 if (!isPlayComplete) {
                     mPlayerListener.isReadChange();
                 } else {
@@ -242,7 +245,7 @@ public class AudioPlayService {
                     timer = null;
                 }
             }
-            //开始计时任务后的5毫秒后第一次执行run方法，以后每500毫秒执行一次
+            //开始计时任务后的0毫秒后第一次执行run方法，以后每1000毫秒执行一次
         }, 0, 1000);
     }
 
@@ -281,13 +284,8 @@ public class AudioPlayService {
     }
 
     public void setListenerModel(int listenerModel) {
-        this.isLoopIng = false;
-        if (player != null) player.setLooping(isLoopIng);
+        if (player != null) player.setLooping(listenerModel == 2);
         this.listenerModel = listenerModel;
-    }
-
-    public void setLoopIng(boolean loopIng) {
-        isLoopIng = loopIng;
     }
 
 }

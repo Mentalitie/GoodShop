@@ -18,6 +18,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.blizzard.war.utils.CommonUtil.GetDrawable;
+
 /**
  * 功能描述:
  * 阅读适配器
@@ -34,10 +36,12 @@ public class TextReadAdapter extends RecyclerView.Adapter {
 
     // banner 模型
     private List<JSONObject> txtList;
+    private Boolean listBo;
 
-    public TextReadAdapter(Context context, List<JSONObject> list) {
+    public TextReadAdapter(Context context, List<JSONObject> list, Boolean bo) {
         this.context = context;
         this.txtList = list;
+        this.listBo = bo;
     }
 
     @Override
@@ -51,15 +55,20 @@ public class TextReadAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
         if (viewHolder instanceof TxtReadViewHolder) {
             TxtReadViewHolder txtReadViewHolder = (TxtReadViewHolder) viewHolder;
-            try {
-                txtReadViewHolder.itemText.setText(txtList.get(i).getString("title"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            txtReadViewHolder.itemText.setOnClickListener(v -> {
+            txtReadViewHolder.tvRead.setText(txtList.get(i).getString("title"));
+            setSelect(txtReadViewHolder,txtList.get(i).getBoolean("isSelect"));
+            txtReadViewHolder.tvRead.setOnClickListener(v -> {
                 mPosition = i;
-                mSelectItem.select(v, i);
+                mSelectItem.select(v, i, listBo);
             });
+        }
+    }
+
+    private void setSelect(TxtReadViewHolder txtReadViewHolder,Boolean bo){
+        if (bo) {
+            txtReadViewHolder.tvRead.setBackground(GetDrawable(R.color.window_tool_bar_icon));
+        } else {
+            txtReadViewHolder.tvRead.setBackground(GetDrawable(R.color.window_background));
         }
     }
 
@@ -78,7 +87,7 @@ public class TextReadAdapter extends RecyclerView.Adapter {
     }
 
     public interface SelectItem {
-        void select(View view, int i);
+        void select(View view, int i, Boolean bo);
     }
 
     public void setSelectItem(SelectItem selectItem) {
@@ -91,7 +100,7 @@ public class TextReadAdapter extends RecyclerView.Adapter {
      */
     static class TxtReadViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_read)
-        TextView itemText;
+        TextView tvRead;
 
         TxtReadViewHolder(View itemView) {
             super(itemView);

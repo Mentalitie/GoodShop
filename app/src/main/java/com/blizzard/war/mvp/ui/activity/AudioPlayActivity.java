@@ -1,22 +1,12 @@
 package com.blizzard.war.mvp.ui.activity;
 
 import android.Manifest;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Icon;
 import android.media.MediaPlayer;
-import android.media.session.MediaSession;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,13 +18,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.blizzard.war.R;
-import com.blizzard.war.app.BiliApplication;
 import com.blizzard.war.mvp.contract.RxBaseActivity;
 import com.blizzard.war.mvp.ui.adapter.AudioPlayAdapter;
 import com.blizzard.war.mvp.ui.widget.CircleProgressView;
 import com.blizzard.war.service.AudioPlayService;
 import com.blizzard.war.service.HeadsetReceiver;
-import com.blizzard.war.service.NotificationReceiver;
 import com.blizzard.war.utils.DateUtil;
 import com.blizzard.war.utils.DoubleClickUtil;
 import com.blizzard.war.utils.ToastUtil;
@@ -71,11 +59,11 @@ public class AudioPlayActivity extends RxBaseActivity {
     CircleProgressView mCircleProgressView;
     @BindView(R.id.media_play_recycle)
     RecyclerView mRecyclerView;
-    @BindView(R.id.item_music_seekBar)
+    @BindView(R.id.sb_music_seekBar)
     SeekBar mMusicSeekBar;
-    @BindView(R.id.item_music_now_play)
+    @BindView(R.id.tv_music_now_play)
     TextView mMusicNowText;
-    @BindView(R.id.item_music_now_time)
+    @BindView(R.id.tv_music_now_time)
     TextView mMusicNowTime;
     @BindView(R.id.media_load_error)
     LinearLayout mMusicError;
@@ -90,6 +78,7 @@ public class AudioPlayActivity extends RxBaseActivity {
     private Boolean isSeekBarTouch;
     private List<JSONObject> musicList;
     private final Handler musicHandler = new Handler();
+    public static AudioPlayActivity _this = null;
 
     @Override
     public int getLayoutId() {
@@ -98,11 +87,8 @@ public class AudioPlayActivity extends RxBaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            showContacts();
-        } else {
-            initData();
-        }
+        _this = this;
+        initData();
     }
 
     @Override
@@ -139,7 +125,7 @@ public class AudioPlayActivity extends RxBaseActivity {
 //        });
         audioPlayService = MainActivity.getAudioPlayService();
         musicList = audioPlayService.getAudioList();//实例化一个List链表数组
-        MainActivity.setNotifiChangeListener(new MainActivity.NotifiChangeListener() {
+        MainActivity.setNotifyChangeListener(new MainActivity.NotifyChangeListener() {
             @Override
             public void isChange(JSONObject s) {
                 try {
@@ -174,51 +160,50 @@ public class AudioPlayActivity extends RxBaseActivity {
         mMusicError.setVisibility(View.VISIBLE);
     }
 
-    @OnClick({R.id.item_music_play, R.id.layout_back_icon, R.id.item_music_pause, R.id.item_music_goPlay, R.id.item_music_next, R.id.item_music_prev, R.id.item_music_stop, R.id.item_music_loop_listener, R.id.item_music_random_listener, R.id.item_music_over_loop_listener, R.id.music_rebuild_permission})
+    @OnClick({R.id.bt_music_play, R.id.layout_back_icon, R.id.bt_music_pause, R.id.bt_music_goPlay, R.id.bt_music_next, R.id.bt_music_prev, R.id.bt_music_stop, R.id.bt_music_loop_listener, R.id.bt_music_random_listener, R.id.bt_music_over_loop_listener, R.id.music_rebuild_permission})
     void onClick(View view) {
         String s = "";
         switch (view.getId()) {
-            case R.id.item_music_play:
+            case R.id.bt_music_play:
                 s = "开始播放";
                 audioPlayService.play();
                 break;
-            case R.id.item_music_pause:
+            case R.id.bt_music_pause:
                 s = "暂停播放";
                 audioPlayService.pause();
                 break;
-            case R.id.item_music_goPlay:
+            case R.id.bt_music_goPlay:
                 s = "继续播放";
                 audioPlayService.goPlay();
                 break;
-            case R.id.item_music_next:
+            case R.id.bt_music_next:
                 s = "下一首";
                 audioPlayService.next();
                 break;
-            case R.id.item_music_prev:
+            case R.id.bt_music_prev:
                 s = "上一首";
                 audioPlayService.prev();
                 break;
-            case R.id.item_music_stop:
+            case R.id.bt_music_stop:
                 s = "停止播放";
                 audioPlayService.stop();
                 break;
-            case R.id.item_music_loop_listener:
+            case R.id.bt_music_loop_listener:
                 s = "列表循环";
                 audioPlayService.setListenerModel(0);
                 break;
-            case R.id.item_music_random_listener:
+            case R.id.bt_music_random_listener:
                 s = "随机播放";
                 audioPlayService.setListenerModel(1);
                 break;
-            case R.id.item_music_over_loop_listener:
+            case R.id.bt_music_over_loop_listener:
                 s = "单曲循环";
-                audioPlayService.setLoopIng(true);
+                audioPlayService.setListenerModel(2);
                 break;
             case R.id.layout_back_icon:
                 finish();
                 break;
             case R.id.music_rebuild_permission:
-                showContacts();
                 break;
         }
         if (!s.equals("")) {
@@ -295,66 +280,8 @@ public class AudioPlayActivity extends RxBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (receiver != null) unregisterReceiver(receiver);
-        audioPlayService.stop();
+//        if (receiver != null) unregisterReceiver(receiver);
+//        audioPlayService.stop();
     }
 
-    private static final int READ_PHONE_STATE = 100;
-
-    //请求权限
-    public void showContacts() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.INTERNET,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_NETWORK_STATE,
-                    Manifest.permission.ACCESS_WIFI_STATE,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
-                    Manifest.permission.CHANGE_WIFI_STATE
-            }, READ_PHONE_STATE);
-        } else {
-            initData();
-        }
-    }
-
-    //Android6.0申请权限的回调方法
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            // requestCode即所声明的权限获取码，在checkSelfPermission时传入
-            case READ_PHONE_STATE:
-                if (grantResults[1] == PackageManager.PERMISSION_DENIED) {
-                    initError();
-                } else {
-                    initData();
-                }
-                break;
-            default:
-                break;
-        }
-    }
 }

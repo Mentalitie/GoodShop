@@ -1,6 +1,3 @@
-/*
- * Copyright (C) 2017 Baidu, Inc. All Rights Reserved.
- */
 package com.blizzard.war.utils;
 
 import com.google.gson.Gson;

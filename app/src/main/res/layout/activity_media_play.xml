@@ -59,7 +59,7 @@
         android:paddingBottom="@dimen/dp5">
 
         <TextView
-            android:id="@+id/item_music_now_play"
+            android:id="@+id/tv_music_now_play"
             android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -70,7 +70,7 @@
             android:textColor="@color/text_gray" />
 
         <TextView
-            android:id="@+id/item_music_now_time"
+            android:id="@+id/tv_music_now_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp20"
@@ -80,7 +80,7 @@
     </LinearLayout>
 
     <SeekBar
-        android:id="@+id/item_music_seekBar"
+        android:id="@+id/sb_music_seekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp20"
@@ -98,55 +98,55 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/item_music_play"
+                android:id="@+id/bt_music_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/music_play" />
 
             <Button
-                android:id="@+id/item_music_pause"
+                android:id="@+id/bt_music_pause"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/music_pause" />
 
             <Button
-                android:id="@+id/item_music_goPlay"
+                android:id="@+id/bt_music_goPlay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/music_go_play" />
 
             <Button
-                android:id="@+id/item_music_next"
+                android:id="@+id/bt_music_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/music_next" />
 
             <Button
-                android:id="@+id/item_music_prev"
+                android:id="@+id/bt_music_prev"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/music_prev" />
 
             <Button
-                android:id="@+id/item_music_stop"
+                android:id="@+id/bt_music_stop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/music_stop" />
 
             <Button
-                android:id="@+id/item_music_loop_listener"
+                android:id="@+id/bt_music_loop_listener"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/music_loop" />
 
             <Button
-                android:id="@+id/item_music_random_listener"
+                android:id="@+id/bt_music_random_listener"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/music_random" />
 
             <Button
-                android:id="@+id/item_music_over_loop_listener"
+                android:id="@+id/bt_music_over_loop_listener"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/music_over_loop" />

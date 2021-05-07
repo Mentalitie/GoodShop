@@ -1,11 +1,14 @@
 package com.blizzard.war.mvp.ui.activity;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Icon;
 import android.media.session.MediaSession;
@@ -13,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
@@ -36,7 +40,6 @@ import com.blizzard.war.mvp.model.tracker.TrackerFragment;
 import com.blizzard.war.mvp.ui.widget.CircleImageView;
 import com.blizzard.war.service.AudioPlayService;
 import com.blizzard.war.service.NotificationReceiver;
-import com.blizzard.war.utils.CommonUtil;
 import com.blizzard.war.utils.ConstantUtil;
 import com.blizzard.war.utils.PreferenceUtil;
 import com.blizzard.war.utils.ToastUtil;
@@ -82,8 +85,10 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
     private final String MUSIC_CANCEL_FILTER = "MUSIC_CANCEL_FILTER";
     private NotificationReceiver mNotificationReceiver;
     private static AudioPlayService audioPlayService;
-    private static NotifiChangeListener mNotifiChangeListener;
+    private static NotifyChangeListener mNotifyChangeListener;
     private Boolean isServeLive = false;
+    private static final int READ_PHONE_STATE = 100;
+
 
     @Override
     public int getLayoutId() {
@@ -98,7 +103,8 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
         //初始化侧滑菜单
         initNavigationView();
 
-        initService();
+        showContacts();
+
     }
 
     /**
@@ -162,14 +168,15 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
             @Override
             public void isChangePlay(JSONObject s) {
                 setNotification();
-                mNotifiChangeListener.isChange(s);
+                mNotifyChangeListener.isChange(s);
             }
 
             @Override
             public void isReadChange() {
-                mNotifiChangeListener.isSeedChange();
+                mNotifyChangeListener.isSeedChange();
             }
         });
+
         setNotification();
     }
 
@@ -211,7 +218,8 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
                 return true;
             // 视频
             case R.id.item_video:
-                CommonUtil.JumpTo(VideoPlayActivity.class);
+//                CommonUtil.JumpTo(VideoPlayActivity.class);
+                startRemind();
                 return true;
         }
         return false;
@@ -273,6 +281,8 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
                     exitApp();
                 }
             }
+        } else {
+            return super.onKeyDown(keyCode, event);
         }
         return true;
     }
@@ -315,7 +325,10 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
 
     @Override
     protected void onDestroy() {
-        if (isServeLive) unregisterReceiver(mNotificationReceiver);
+        if (isServeLive) {
+            unregisterReceiver(mNotificationReceiver);
+        }
+        audioPlayService.stop();
         super.onDestroy();
     }
 
@@ -426,6 +439,7 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
                             isServeLive = false;
                             manager.cancel(1);
                             unregisterReceiver(mNotificationReceiver);
+                            AudioPlayActivity._this.finish();
                             finish();
                             break;
                     }
@@ -445,13 +459,81 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
         manager.notify(1, notification);
     }
 
-    public interface NotifiChangeListener {
+    public interface NotifyChangeListener {
         void isChange(JSONObject jsonObject);
 
         void isSeedChange();
     }
 
-    public static void setNotifiChangeListener(NotifiChangeListener notifiChangeListener) {
-        mNotifiChangeListener = notifiChangeListener;
+    public static void setNotifyChangeListener(NotifyChangeListener NotifyChangeListener) {
+        mNotifyChangeListener = NotifyChangeListener;
+    }
+
+
+    /**
+     * 开启提醒
+     */
+    private void startRemind() {
+
+        Intent intent = new Intent(this, RemindActivity.class);
+        startActivity(intent);
+
+    }
+
+    //请求权限
+    public void showContacts() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.ACCESS_NETWORK_STATE,
+                    Manifest.permission.ACCESS_WIFI_STATE,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+                    Manifest.permission.CHANGE_WIFI_STATE
+            }, READ_PHONE_STATE);
+        } else {
+            //初始化音乐服务
+            initService();
+        }
+    }
+
+    //Android6.0申请权限的回调方法
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            // requestCode即所声明的权限获取码，在checkSelfPermission时传入
+            case READ_PHONE_STATE:
+                if (grantResults[1] == PackageManager.PERMISSION_DENIED) {
+                } else {
+                    initService();
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

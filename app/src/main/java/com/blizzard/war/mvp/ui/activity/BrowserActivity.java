@@ -13,15 +13,18 @@ import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,16 +33,19 @@ import com.blizzard.war.R;
 import com.blizzard.war.mvp.contract.RxBaseActivity;
 import com.blizzard.war.utils.ClipboardUtil;
 import com.blizzard.war.utils.ConstantUtil;
+import com.blizzard.war.utils.LogUtil;
 import com.blizzard.war.utils.ToastUtil;
 import com.blizzard.war.mvp.ui.widget.CircleProgressView;
 
 import butterknife.BindView;
 
 /**
- * Created by hcc on 16/8/7 14:12
- * 100332338@qq.com
- * <p/>
- * 浏览器界面
+ * 功能描述:
+ * 浏览器页面
+ *
+ * @auther: ma
+ * @param: BrowserActivity
+ * @date: 2021-04-30 20:18
  */
 public class BrowserActivity extends RxBaseActivity {
 
@@ -59,6 +65,8 @@ public class BrowserActivity extends RxBaseActivity {
     CircleProgressView progressBar;
     @BindView(R.id.webView)
     WebView mWebView;
+    @BindView(R.id.et_website)
+    EditText mEtWebsite;
 
     private final Handler mHandler = new Handler();
     private String url, copyUrl, mTitle;
@@ -88,6 +96,14 @@ public class BrowserActivity extends RxBaseActivity {
         mToolBar.setNavigationIcon(R.drawable.ic_cancel);
         mToolBar.setNavigationOnClickListener(v -> finish());
         mToolBar.setTitle(TextUtils.isEmpty(mTitle) ? "详情" : mTitle);
+        mEtWebsite.setVisibility(View.VISIBLE);
+        mEtWebsite.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                mWebView.loadUrl(String.valueOf(v.getText()));
+                return true;
+            }
+        });
     }
 
     @Override
@@ -126,7 +142,7 @@ public class BrowserActivity extends RxBaseActivity {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
-        intent.putExtra(Intent.EXTRA_TEXT, "来自「哔哩哔哩」的分享:" + copyUrl);
+        intent.putExtra(Intent.EXTRA_TEXT, "来自「cheers」的分享:" + copyUrl);
         startActivity(Intent.createChooser(intent, mTitle));
     }
 
@@ -161,8 +177,9 @@ public class BrowserActivity extends RxBaseActivity {
         webSettings.setLoadWithOverviewMode(true); //和setUseWideViewPort(true)一起解决网页自适应问题
         webSettings.setUseWideViewPort(true);
         webSettings.setDomStorageEnabled(true); //DOM Storage
+        webSettings.setDatabaseEnabled(true);
         webSettings.setAppCacheEnabled(true); //是否使用缓存
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webSettings.setGeolocationEnabled(true);
 
         mWebView.getSettings().setBlockNetworkImage(true); // 本身含义阻止图片网络数据
@@ -241,4 +258,6 @@ public class BrowserActivity extends RxBaseActivity {
         mHandler.removeCallbacksAndMessages(null);
         super.onDestroy();
     }
+
+
 }

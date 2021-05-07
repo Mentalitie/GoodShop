@@ -23,8 +23,11 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
 
     <application
         android:name=".app.BiliApplication"
@@ -32,6 +35,7 @@
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
@@ -87,9 +91,23 @@
         <activity
             android:name=".mvp.ui.activity.VideoPlayActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <!--android:configChanges="screenLayout|orientation"-->
         <!--android:supportsPictureInPicture="true"-->
+
+        <activity
+            android:name=".mvp.ui.activity.RemindActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <receiver
+            android:name=".service.RemindService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="repeatAlarm" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -12,7 +12,6 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,8 +28,6 @@ import com.blizzard.war.mvp.ui.activity.MainActivity;
 import com.blizzard.war.mvp.ui.adapter.TextReadAdapter;
 import com.blizzard.war.utils.DoubleClickUtil;
 import com.blizzard.war.utils.GsonUtils;
-import com.blizzard.war.utils.LogUtil;
-import com.blizzard.war.utils.ReadTextUtil;
 import com.google.gson.reflect.TypeToken;
 
 import net.sf.json.JSONArray;
@@ -88,6 +85,7 @@ public class ReadFragment extends RxLazyFragment implements TextToSpeech.OnInitL
     private Handler handler;
     private int pageIndex = 0;
     private Boolean isSelect = false;
+    private int lastIn = -1;
 
     public static ReadFragment newInstance() {
         return new ReadFragment();
@@ -167,24 +165,48 @@ public class ReadFragment extends RxLazyFragment implements TextToSpeech.OnInitL
     }
 
     private void initList(List<JSONObject> li, Boolean bo) {
-        textReadAdapter = new TextReadAdapter(getContext(), li);
+        textReadAdapter = new TextReadAdapter(getContext(), li, bo);
         if (!bo) {
             mRvShowText.setAdapter(textReadAdapter);
         } else {
             mRvShowChild.setAdapter(textReadAdapter);
         }
-        textReadAdapter.setSelectItem((view, i) -> {
+        textReadAdapter.setSelectItem((view, i, isFather) -> {
             if (!bo) {
                 List<JSONObject> list1 = GsonUtils.fromJson(li.get(i).getString("child"), new TypeToken<List<JSONObject>>() {
                 }.getType());
+//                if (!isFather) {
+//                    for (int j = 0; j < list.size(); j++) {
+//                        list.get(j).remove("isSelect");
+//                        list.get(j).put("isSelect", false);
+//                    }
+//                    list.get(i).remove("isSelect");
+//                    list.get(i).put("isSelect", true);
+//                    initList(list, false);
+//                } else {
+//                    if (lastIn != -1) {
+//                        list1.get(lastIn).remove("isSelect");
+//                        list1.get(i).put("isSelect", false);
+//                    }
+//                    list1.get(i).remove("isSelect");
+//                    list1.get(i).put("isSelect", true);
+//                    lastIn = i;
+//                }
                 initList(list1, true);
             } else {
                 readList = li;
                 isSelect = true;
                 speech(readList.get(i).getString("path"));
                 pageIndex = i;
+//                if (lastIn != -1) {
+//                    readList.get(lastIn).remove("isSelect");
+//                    readList.get(lastIn).put("isSelect", false);
+//                }
+//                readList.get(i).remove("isSelect");
+//                readList.get(i).put("isSelect", true);
+//                lastIn = i;
             }
-
+//            textReadAdapter.notifyDataSetChanged();
         });
         GridLayoutManager layout = new GridLayoutManager(getContext(), 1);
         layout.setOrientation(LinearLayoutManager.VERTICAL);
@@ -216,6 +238,7 @@ public class ReadFragment extends RxLazyFragment implements TextToSpeech.OnInitL
                     JSONObject listObject = new JSONObject();
                     listObject.put("title", file[i].getName());
                     listObject.put("path", filePath + file[i].getName());
+                    listObject.put("isSelect", false);
 
                     while (cursor.moveToNext()) {
                         Map<String, Object> mMap = new HashMap<String, Object>();
@@ -224,10 +247,11 @@ public class ReadFragment extends RxLazyFragment implements TextToSpeech.OnInitL
                         if (path.contains(filePath)) {
                             mMap.put("title", title);
                             mMap.put("path", path);
+                            mMap.put("isSelect", false);
 //                            String regEx = "[^0-9]";
 //                            Pattern p = Pattern.compile(regEx);
 //                            Matcher m = p.matcher(title);
-//                            m.replaceAll("").trim()
+//                            mMap.put("index", m.replaceAll("").trim());
                             Pattern ps = Pattern.compile("\\d+");
                             Matcher ms = ps.matcher(title);
                             ms.find();
@@ -237,8 +261,6 @@ public class ReadFragment extends RxLazyFragment implements TextToSpeech.OnInitL
                     }
                     list.add(listObject);
                 }
-                assert cursor != null;
-                cursor.close();
                 for (int i = 0; i < list.size(); i++) {
                     JSONObject jsonObject = list.get(i);
                     List<JSONObject> newChildList = new ArrayList<>();
@@ -251,6 +273,7 @@ public class ReadFragment extends RxLazyFragment implements TextToSpeech.OnInitL
                     newChildList = ListSort(newChildList);
                     jsonObject.put("child", GsonUtils.toJson(newChildList));
                 }
+                cursor.close();
                 message.what = 1;
                 handler.sendMessage(message);
             }
@@ -260,7 +283,7 @@ public class ReadFragment extends RxLazyFragment implements TextToSpeech.OnInitL
 
     public static List<JSONObject> ListSort(List<JSONObject> objectList) {
         List<JSONObject> sortedList = new ArrayList<>();
-        List<JSONObject> jsonValues = new ArrayList<JSONObject>();
+        List<JSONObject> jsonValues = new ArrayList<>();
         for (int i = 0; i < objectList.size(); i++) {
             jsonValues.add(objectList.get(i));
         }

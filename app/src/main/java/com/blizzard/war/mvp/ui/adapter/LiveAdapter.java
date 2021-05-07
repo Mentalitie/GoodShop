@@ -124,11 +124,11 @@ public class LiveAdapter extends RecyclerView.Adapter {
         } else if (viewHolder instanceof LiveBannerViewHolder) {
             LiveBannerViewHolder liveBannerViewHolder = (LiveBannerViewHolder) viewHolder;
             bannerEntry.clear();
-            bannerEntry.add(new BannerEntry("图片1", "http://www.baidu.com", "http://d.hiphotos.baidu.com/image/pic/item/6159252dd42a2834a75bb01156b5c9ea15cebf2f.jpg"));
-            bannerEntry.add(new BannerEntry("图片1", "http://www.baidu.com", "http://d.hiphotos.baidu.com/image/pic/item/6159252dd42a2834a75bb01156b5c9ea15cebf2f.jpg"));
-            bannerEntry.add(new BannerEntry("图片1", "http://www.baidu.com", "http://d.hiphotos.baidu.com/image/pic/item/6159252dd42a2834a75bb01156b5c9ea15cebf2f.jpg"));
-            bannerEntry.add(new BannerEntry("图片1", "http://www.baidu.com", "http://d.hiphotos.baidu.com/image/pic/item/6159252dd42a2834a75bb01156b5c9ea15cebf2f.jpg"));
-            bannerEntry.add(new BannerEntry("图片1", "http://www.baidu.com", "http://d.hiphotos.baidu.com/image/pic/item/6159252dd42a2834a75bb01156b5c9ea15cebf2f.jpg"));
+            bannerEntry.add(new BannerEntry("图片1", "https://www.baidu.com", "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F0%2F57d22dede8e68.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622376756&t=3378131e48184d1eaa2f1f4405174655"));
+            bannerEntry.add(new BannerEntry("图片1", "https://www.baidu.com", "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F0%2F57d22dede8e68.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622376756&t=3378131e48184d1eaa2f1f4405174655"));
+            bannerEntry.add(new BannerEntry("图片1", "https://www.baidu.com", "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F0%2F57d22dede8e68.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622376756&t=3378131e48184d1eaa2f1f4405174655"));
+            bannerEntry.add(new BannerEntry("图片1", "https://www.baidu.com", "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F0%2F57d22dede8e68.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622376756&t=3378131e48184d1eaa2f1f4405174655"));
+            bannerEntry.add(new BannerEntry("图片1", "https://www.baidu.com", "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F0%2F57d22dede8e68.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622376756&t=3378131e48184d1eaa2f1f4405174655"));
             liveBannerViewHolder.banner
                     .delayTime(5)
                     .build(bannerEntry, context);

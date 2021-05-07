@@ -181,5 +181,7 @@
     <string name="music_over_loop">单曲循环</string>
     <string name="music_error_permission">获取权限失败，请重试</string>
     <string name="music_error_rebuild_permission">重试</string>
+    <string name="remind_sports">起来运动一下吧</string>
+    <string name="sure">确定</string>
 
 </resources>
