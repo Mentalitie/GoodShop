@@ -1,17 +1,10 @@
 package com.blizzard.war.service;
 
-import android.content.ContentResolver;
-import android.database.Cursor;
 import android.media.MediaPlayer;
-import android.net.Uri;
-import android.provider.MediaStore;
 
 import com.blizzard.war.app.BiliApplication;
+import com.blizzard.war.entry.AudioEntry;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -28,25 +21,20 @@ import java.util.TimerTask;
  */
 
 public class AudioPlayService {
-    private int songNum; // 当前播放歌曲在list中的下标，flag为标志
+    private int songNum = 0; // 当前播放歌曲在list中的下标，flag为标志
     private List<Integer> prevSongNum = new ArrayList<>(); // 上一首歌曲记忆位置
     private String songName;// 当前播放歌曲名
     private boolean isPause;// 判断是从暂停中恢复还是重新播放
     private boolean isPlayComplete;
     private int listenerModel = 1; // 设置播放模式
 
-    private List<JSONObject> musicList = new ArrayList<>(); // 存放找到的所有mp3的绝对路径。
+    private List<AudioEntry> musicList; // 存放找到的所有mp3的绝对路径。
     private MediaPlayer player; // 定义多媒体对象
     private PlayerListener mPlayerListener;
     private Timer timer;
-    private JSONObject jsonObject;
 
     private void setPlayName() {
-        try {
-            songName = musicList.get(songNum).getString("song_name");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        songName = musicList.get(songNum).getSong_name();
     }
 
     public void play() {
@@ -63,7 +51,7 @@ public class AudioPlayService {
                             timer.cancel();
                             timer = null;
                         }
-                        String dataSource = musicList.get(songNum).getString("url");//得到当前播放音乐的路径
+                        String dataSource = musicList.get(songNum).getUrl();//得到当前播放音乐的路径
                         setPlayName();//截取歌名
                         // 指定参数为音频文件
 //                        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -77,10 +65,8 @@ public class AudioPlayService {
                                 next();//如果当前歌曲播放完毕,自动播放下一首.
                             });
                         }
-                        jsonObject = new JSONObject();
-                        jsonObject.put("songName", songName);
-                        jsonObject.put("duration", Long.parseLong(musicList.get(songNum).getString("duration")));
-                        mPlayerListener.isChangePlay(jsonObject);
+
+                        mPlayerListener.isChangePlay(musicList.get(songNum));
                         SendPlayMsg();
                     } catch (Exception e) {
                         System.out.println("MusicService: " + e.getMessage());
@@ -167,69 +153,6 @@ public class AudioPlayService {
         play();
     }
 
-    public List<JSONObject> getAudioList() {
-        ContentResolver contentResolver = BiliApplication.GetContext().getContentResolver();
-        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;  // 这个Uri代表要查询的数据库名称加上表的名称。
-        String[] projection = null; // 这个参数代表要从表中选择的列，用一个String数组来表示。
-        String selection = null;    // 相当于SQL语句中的where子句，就是代表你的查询条件。
-        String[] selectionArgs = null;  // 这个参数是说你的Selections里有？这个符号是，这里可以以实际值代替这个问号。如果Selections这个没有？的话，那么这个String数组可以为null。
-        String sortOrder = MediaStore.Audio.Media._ID;   // 排序
-        Cursor cursor = contentResolver.query(uri, projection, selection, selectionArgs, sortOrder);
-
-        while (cursor.moveToNext()) {
-            try {
-                JSONObject jsonObject = new JSONObject();
-                int duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));    // 获取音频时长
-                int size = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));    // 获取音频文件大小
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));   // 获取音频ID
-                String url = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));   // 获取音频地址
-                String title = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));    // 获取音频名称
-                String album = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));    // 获取音频专辑名
-                String year = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR));    // 获取音频发行日期
-                String artist = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));   // 获取音频歌手名
-                String display_name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)).replaceAll(" ", "");  // 获取音频文件的名称
-                String song_name = new File(url).getName();
-
-                if (song_name.contains("-")) {
-                    song_name = song_name.substring(0, song_name.lastIndexOf("."));
-                    if (song_name.contains(" -")) {
-                        song_name = song_name.substring(0, song_name.indexOf(" -")) + " - " + song_name.substring(song_name.indexOf("- ") + 2);
-                    } else {
-                        song_name = song_name.substring(0, song_name.indexOf("-")) + " - " + song_name.substring(song_name.indexOf("-") + 1);
-                    }
-                } else {
-                    song_name = artist + " - ";
-                    if (title.lastIndexOf("-") == -1) {
-                        song_name += title;
-                    } else {
-                        song_name += title.substring(0, title.lastIndexOf("-"));
-                    }
-                }
-
-                jsonObject.put("duration", duration);
-                jsonObject.put("size", size);
-                jsonObject.put("id", id);
-                jsonObject.put("url", url);
-                jsonObject.put("title", title);
-                jsonObject.put("album", album);
-                jsonObject.put("year", year);
-                jsonObject.put("artist", artist);
-                jsonObject.put("display_name", display_name);
-                jsonObject.put("song_name", song_name);
-
-                if (duration / 1000 > 30) {
-                    musicList.add(jsonObject);
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        cursor.close();
-        setPlayName();
-        return musicList;
-    }
-
     public void SendPlayMsg() {
         if (timer == null) {
             System.out.println("创建timer对象");
@@ -273,8 +196,16 @@ public class AudioPlayService {
         return player;
     }
 
+    public List<AudioEntry> getAudioList() {
+//        musicList = GsonUtils.fromJson(FileUtil.LoadFile(context, "musicList.txt"), new TypeToken<List<AudioEntry>>() {
+//        }.getType());
+        musicList = BiliApplication.getMusicList();
+        setPlayName();
+        return musicList;
+    }
+
     public interface PlayerListener {
-        void isChangePlay(JSONObject jsonObject);
+        void isChangePlay(AudioEntry audioEntry);
 
         void isReadChange();
     }

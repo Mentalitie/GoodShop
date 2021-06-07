@@ -52,13 +52,6 @@
             android:title="@string/item_settings" />
 
         <item
-            android:id="@+id/item_read"
-            android:checked="false"
-            android:icon="@drawable/ic_settings_black_24dp"
-            android:title="@string/item_read" />
-
-
-        <item
             android:id="@+id/item_video"
             android:checked="false"
             android:icon="@drawable/ic_settings_black_24dp"

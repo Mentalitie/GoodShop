@@ -2,6 +2,7 @@ package com.blizzard.war.mvp.model.home;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.TabLayout;
@@ -26,6 +27,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.blizzard.war.mvp.ui.activity.MainActivity.WRITE_READ_PERMISSION;
+import static com.blizzard.war.mvp.ui.activity.MainActivity.showContacts;
 
 /**
  * 功能描述:
@@ -117,8 +121,12 @@ public class HomePageFragment extends RxLazyFragment {
                 CommonUtil.JumpTo(GameCenterActivity.class);
                 break;
             case R.id.id_action_main_listen:
-                // 音乐中心
-                CommonUtil.JumpTo(AudioPlayActivity.class);
+                if (WRITE_READ_PERMISSION == PackageManager.PERMISSION_GRANTED) {
+                    // 音乐中心
+                    CommonUtil.JumpTo(AudioPlayActivity.class);
+                } else {
+                    showContacts();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);

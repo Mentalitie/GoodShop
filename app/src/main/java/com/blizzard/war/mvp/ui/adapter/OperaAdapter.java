@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blizzard.war.R;
-import com.blizzard.war.mvp.ui.widget.banner.BannerEntry;
-import com.blizzard.war.mvp.ui.widget.banner.BannerView;
+import com.blizzard.war.entry.BannerEntry;
+import com.blizzard.war.mvp.ui.widget.BannerView;
 import com.blizzard.war.utils.CommonUtil;
 import com.blizzard.war.utils.DisplayUtil;
 import com.blizzard.war.utils.ToastUtil;

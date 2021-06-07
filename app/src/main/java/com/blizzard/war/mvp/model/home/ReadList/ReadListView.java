@@ -1,5 +1,6 @@
-package com.blizzard.war.mvp.model.home.Region;
+package com.blizzard.war.mvp.model.home.ReadList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,27 +9,41 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.blizzard.war.R;
-import com.blizzard.war.mvp.ui.adapter.RegionAdapter;
+import com.blizzard.war.app.BiliApplication;
+import com.blizzard.war.entry.ReadEntry;
+import com.blizzard.war.mvp.ui.activity.ReadActivity;
+import com.blizzard.war.mvp.ui.adapter.ReadListAdapter;
 import com.blizzard.war.mvp.contract.RxLazyFragment;
+import com.blizzard.war.service.MessageWrap;
+import com.blizzard.war.utils.CommonUtil;
+import com.blizzard.war.utils.GsonUtils;
 import com.blizzard.war.utils.SnackbarUtil;
 import com.blizzard.war.mvp.ui.widget.CustomEmptyView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
+import static com.blizzard.war.utils.Config.READ_LIST;
+
 /**
  * 功能描述:
- * 首页分区页面
+ * 首页阅读列表页面
  *
  * @auther: ma
- * @param: RegionView
+ * @param: ReadListView
  * @date: 2019/4/29 15:27
  */
 
-public class RegionView extends RxLazyFragment {
+public class ReadListView extends RxLazyFragment {
     @BindView(R.id.recycle)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
@@ -36,19 +51,21 @@ public class RegionView extends RxLazyFragment {
     @BindView(R.id.empty_layout)
     CustomEmptyView mCustomEmptyView;
 
-    RegionAdapter mRegionAdapter;
+    private List<ReadEntry> list = new ArrayList<>();
+    private ReadListAdapter mReadListAdapter;
 
-    public static RegionView newInstance() {
-        return new RegionView();
+    public static ReadListView newInstance() {
+        return new ReadListView();
     }
 
     @Override
     public int getLayoutResId() {
-        return R.layout.fragment_region_view;
+        return R.layout.fragment_read_list_view;
     }
 
     @Override
     public void finishCreateView(Bundle state) {
+        EventBus.getDefault().register(this);
         isPrepared = true;
         lazyLoad();
     }
@@ -64,14 +81,22 @@ public class RegionView extends RxLazyFragment {
 
     @Override
     protected void initRecyclerView() {
-        mRegionAdapter = new RegionAdapter(getActivity());
-        mRecyclerView.setAdapter(mRegionAdapter);
-        GridLayoutManager layout = new GridLayoutManager(getActivity(), 4);
+        mReadListAdapter = new ReadListAdapter(getActivity(), list);
+        mRecyclerView.setAdapter(mReadListAdapter);
+        mReadListAdapter.setSelectItem(new ReadListAdapter.SelectItem() {
+            @Override
+            public void select(View view, int i) {
+                Intent intent = new Intent(getContext(), ReadActivity.class);
+                intent.putExtra("index", i);
+                CommonUtil.JumpToIn(intent);
+            }
+        });
+        GridLayoutManager layout = new GridLayoutManager(getActivity(), 2);
         layout.setOrientation(LinearLayoutManager.VERTICAL);
         layout.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int i) {
-                return mRegionAdapter.getSpanSize(i);
+                return mReadListAdapter.getSpanSize(i);
             }
         });
         mRecyclerView.setLayoutManager(layout);
@@ -98,6 +123,9 @@ public class RegionView extends RxLazyFragment {
     @Override
     protected void loadData() {
         System.out.println("开始加载数据中");
+        if (BiliApplication.getIsReadListComplete()) {
+            changeList(BiliApplication.getReadList());
+        }
         Observable.timer(3000, TimeUnit.MILLISECONDS)
                 .compose(bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -123,9 +151,27 @@ public class RegionView extends RxLazyFragment {
 
     @Override
     protected void finishTask() {
-        hideEmptyView();
+//        hideEmptyView();
         mSwipeRefreshLayout.setRefreshing(false);
-//        mLiveAppIndexAdapter.notifyDataSetChanged();
         mRecyclerView.scrollToPosition(0);
+    }
+
+
+    private void changeList(List li) {
+        list.clear();
+        list.addAll(li);
+        if (list != null) {
+            mReadListAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageWrap(MessageWrap messageWrap) {
+        switch (messageWrap.status) {
+            case READ_LIST:
+                changeList(messageWrap.list);
+                break;
+        }
     }
 }

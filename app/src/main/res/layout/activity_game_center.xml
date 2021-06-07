@@ -11,20 +11,56 @@
         android:layout_height="match_parent">
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/game_center_recycle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:scrollbars="none" />
-
         <include layout="@layout/layout_loading" />
 
-        <ImageView
-            android:id="@+id/game_center_image"
-            android:layout_width="@dimen/dp50"
-            android:layout_height="@dimen/dp50"
-            android:src="@drawable/ic_avatar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_bottom_pop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bottom_pop" />
+
+                <Button
+                    android:id="@+id/btn_left_pop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/left_pop" />
+
+                <Button
+                    android:id="@+id/btn_right_pop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/right_pop" />
+
+                <Button
+                    android:id="@+id/btn_pop_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pop_menu" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/btn_bottom_sheet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bottom_sheet" />
+
+            </LinearLayout>
+        </LinearLayout>
     </FrameLayout>
+
 
 </LinearLayout>

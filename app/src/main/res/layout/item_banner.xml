@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.blizzard.war.mvp.ui.widget.banner.BannerView
+    <com.blizzard.war.mvp.ui.widget.BannerView
         android:id="@+id/item_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

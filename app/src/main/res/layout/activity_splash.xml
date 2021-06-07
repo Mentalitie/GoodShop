@@ -12,13 +12,13 @@
         android:src="@drawable/ic_splash_default" />
 
 
-    <ImageView
-        android:id="@+id/splash_logo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/dp60"
-        android:src="@drawable/ic_splash_copy" />
+<!--    <ImageView-->
+<!--        android:id="@+id/splash_logo"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginBottom="@dimen/dp60"-->
+<!--        android:src="@drawable/ic_splash_copy" />-->
 
 </RelativeLayout>

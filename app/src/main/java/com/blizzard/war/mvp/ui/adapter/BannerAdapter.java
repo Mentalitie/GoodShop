@@ -1,4 +1,4 @@
-package com.blizzard.war.mvp.ui.widget.banner;
+package com.blizzard.war.mvp.ui.adapter;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
@@ -21,11 +21,11 @@ public class BannerAdapter extends PagerAdapter {
     private List<ImageView> mList;
     private ViewPagerOnItemClickListener mViewPagerOnItemClickListener;
 
-    void setmViewPagerOnItemClickListener(ViewPagerOnItemClickListener mViewPagerOnItemClickListener) {
+    public void setmViewPagerOnItemClickListener(ViewPagerOnItemClickListener mViewPagerOnItemClickListener) {
         this.mViewPagerOnItemClickListener = mViewPagerOnItemClickListener;
     }
 
-    BannerAdapter(List<ImageView> list) {
+    public BannerAdapter(List<ImageView> list) {
         this.mList = list;
     }
 
@@ -65,7 +65,7 @@ public class BannerAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int i, Object object) {
     }
 
-    interface ViewPagerOnItemClickListener {
+    public interface ViewPagerOnItemClickListener {
         void onItemClick();
     }
 }

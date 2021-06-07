@@ -3,7 +3,7 @@ package com.blizzard.war.utils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.ProgressDialog;
+//import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,7 +38,7 @@ public class CommonUtil {
 
     private static Context context = BiliApplication.GetContext();
     private static Intent in;
-    private static ProgressDialog dialog;
+//    private static ProgressDialog dialog;
     private static Handler handler = new Handler();
 
     /**
@@ -248,16 +248,16 @@ public class CommonUtil {
      */
 
     public static void LoadingShow(Activity activity, Boolean bool) {
-        dialog = new ProgressDialog(activity);
-        if (!bool) {
-            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);// 设置进度条的形式为圆形转动的进度条
-        } else {
-            dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);// 设置进度条的形式为水平的进度条
-            dialog.setMax(100);
-        }
-        dialog.setCancelable(true);// 设置是否可以通过点击Back键取消
-        dialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
-        dialog.setIcon(R.mipmap.ic_launcher);//  设置提示的title的图标，默认是没有的，如果没有设置title的话只设置Icon是不会显示图标的
+//        dialog = new ProgressDialog(activity);
+//        if (!bool) {
+//            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);// 设置进度条的形式为圆形转动的进度条
+//        } else {
+//            dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);// 设置进度条的形式为水平的进度条
+//            dialog.setMax(100);
+//        }
+//        dialog.setCancelable(true);// 设置是否可以通过点击Back键取消
+//        dialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
+//        dialog.setIcon(R.mipmap.ic_launcher);//  设置提示的title的图标，默认是没有的，如果没有设置title的话只设置Icon是不会显示图标的
 //        dialog.setTitle("提示");
         // dismiss监听
 //        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -279,13 +279,13 @@ public class CommonUtil {
 //            }
 //        });
 //        // 监听cancel事件
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                // TODO Auto-generated method stub
-                handler.removeCallbacksAndMessages(null);
-            }
-        });
+//        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//            @Override
+//            public void onCancel(DialogInterface dialog) {
+//                // TODO Auto-generated method stub
+//                handler.removeCallbacksAndMessages(null);
+//            }
+//        });
 //        //设置可点击的按钮，最多有三个(默认情况下)
 //        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定",
 //                new DialogInterface.OnClickListener() {
@@ -314,8 +314,8 @@ public class CommonUtil {
 //
 //                    }
 //                });
-        dialog.setMessage("正在注册并登录中");
-        dialog.show();
+//        dialog.setMessage("正在注册并登录中");
+//        dialog.show();
     }
 
     /**
@@ -326,9 +326,9 @@ public class CommonUtil {
      * @auther: ma
      * @date: 2019/4/9 14:19
      */
-    public static ProgressDialog getDialog() {
-        return dialog;
-    }
+//    public static ProgressDialog getDialog() {
+//        return dialog;
+//    }
 
     /**
      * 功能描述:返回handler对象
@@ -352,14 +352,14 @@ public class CommonUtil {
      * @date: 2019/4/9 13:26
      */
     public static void LoadingHide() {
-        if (dialog != null && dialog.isShowing()) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    dialog.dismiss();
-                }
-            }, 2000);
-        }
+//        if (dialog != null && dialog.isShowing()) {
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    dialog.dismiss();
+//                }
+//            }, 2000);
+//        }
     }
 
     /**

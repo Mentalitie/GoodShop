@@ -10,7 +10,7 @@ import com.blizzard.war.mvp.model.home.Hot.HotView;
 import com.blizzard.war.mvp.model.home.Live.LiveView;
 import com.blizzard.war.mvp.model.home.Opera.OperaView;
 import com.blizzard.war.mvp.model.home.Recommend.RecommendView;
-import com.blizzard.war.mvp.model.home.Region.RegionView;
+import com.blizzard.war.mvp.model.home.ReadList.ReadListView;
 
 /**
  * 功能描述:
@@ -52,7 +52,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
                     fragments[i] = OperaView.newInstance();//追番
                     break;
                 case 4:
-                    fragments[i] = RegionView.newInstance();//分区
+                    fragments[i] = ReadListView.newInstance();//分区
                     break;
                 default:
                     break;

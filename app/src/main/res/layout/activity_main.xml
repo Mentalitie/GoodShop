@@ -26,6 +26,6 @@
         app:itemIconTint="@color/navigation_select"
         app:itemBackground="@drawable/db_navigation_back"
         app:itemTextColor="@color/navigation_select"
-        app:menu="@menu/navigation_main" />
+        app:menu="@menu/menu_navigation_main" />
 
 </android.support.v4.widget.DrawerLayout>

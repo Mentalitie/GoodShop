@@ -10,7 +10,7 @@
     </string-array>
 
     <!-- Login and Register-->
-    <string name="login_hint_account">请输入您的哔哩哔哩账号</string>
+    <string name="login_hint_account">请输入您的war账号</string>
     <string name="login_hint_password">请输入您的密码</string>
     <string name="login_btn">登录</string>
     <string name="register_btn">注册</string>
@@ -31,7 +31,7 @@
     <string name="home_tab_more">更多</string>
     <string name="section_recommend">推荐</string>
     <string name="section_live">直播</string>
-    <string name="section_more">分区</string>
+    <string name="section_more">阅读</string>
     <string name="section_hot">热门</string>
     <string name="section_bangumi">追番</string>
     <string name="vip_message_1">您还不是</string>
@@ -55,7 +55,7 @@
     <string name="new_videos">最新视频</string>
     <string name="hot_videos">最热视频</string>
     <string name="news_videos">最新视频</string>
-    <string name="share_title">分享哔哩哔哩App</string>
+    <string name="share_title">分享warApp</string>
     <string name="feedback_titlle">意见反馈</string>
     <string name="feedback_message">如果您有任何意见或者发现了Bug，可以在GitHub上给我提Issuse，我会第一时间关注并解决，谢谢。</string>
     <string name="load_more_no_text">╮(╯3╰)╭ 没有更多数据了</string>
@@ -76,10 +76,10 @@
 
     <!--App 介绍-->
     <string name="about_user_head_layout">硬币: 47</string>
-    <string name="about_introduce">「哔哩哔哩」</string>
+    <string name="about_introduce">「war」</string>
     <string name="about_menu_action_share">分享</string>
     <string name="about_developers">关于我</string>
-    <string name="about">关于哔哩哔哩</string>
+    <string name="about">关于war</string>
     <string name="about_version">V1.0</string>
 
     <string name="video_init">初始化播放器…</string>
@@ -124,6 +124,7 @@
     <string name="video_about">视频相关</string>
     <string name="more">更多</string>
     <string name="download">下载</string>
+    <string name="reload">刷新</string>
     <string name="to_them">追番</string>
     <string name="time_line">放送表</string>
     <string name="index">索引</string>
@@ -183,5 +184,12 @@
     <string name="music_error_rebuild_permission">重试</string>
     <string name="remind_sports">起来运动一下吧</string>
     <string name="sure">确定</string>
+    <string name="read_complete">已下载</string>
+
+    <string name="bottom_pop">bottom_pop</string>
+    <string name="left_pop">left_pop</string>
+    <string name="right_pop">right_pop</string>
+    <string name="pop_menu">pop_menu</string>
+    <string name="bottom_sheet">bottom_sheet</string>
 
 </resources>

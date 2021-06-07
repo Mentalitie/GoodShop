@@ -1,12 +1,8 @@
 package com.blizzard.war.mvp.ui.activity;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +14,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.blizzard.war.R;
+import com.blizzard.war.entry.AudioEntry;
 import com.blizzard.war.mvp.contract.RxBaseActivity;
 import com.blizzard.war.mvp.ui.adapter.AudioPlayAdapter;
 import com.blizzard.war.mvp.ui.widget.CircleProgressView;
@@ -27,8 +24,7 @@ import com.blizzard.war.utils.DateUtil;
 import com.blizzard.war.utils.DoubleClickUtil;
 import com.blizzard.war.utils.ToastUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import net.sf.json.JSONException;
 
 import java.util.List;
 
@@ -76,7 +72,7 @@ public class AudioPlayActivity extends RxBaseActivity {
     private String endDuration;
     private int seekToInt;
     private Boolean isSeekBarTouch;
-    private List<JSONObject> musicList;
+    private List<AudioEntry> musicList;
     private final Handler musicHandler = new Handler();
     public static AudioPlayActivity _this = null;
 
@@ -127,15 +123,15 @@ public class AudioPlayActivity extends RxBaseActivity {
         musicList = audioPlayService.getAudioList();//实例化一个List链表数组
         MainActivity.setNotifyChangeListener(new MainActivity.NotifyChangeListener() {
             @Override
-            public void isChange(JSONObject s) {
+            public void isChange(AudioEntry audioEntry) {
                 try {
                     player = audioPlayService.getPlayer();
                     isSeekBarTouch = false;
-                    mMusicNowText.setText(s.getString("songName"));
+                    mMusicNowText.setText(audioEntry.getSong_name());
                     startDuration = DateUtil.getDuration(0);
-                    endDuration = DateUtil.getDuration(s.getLong("duration"));
+                    endDuration = DateUtil.getDuration(audioEntry.getDuration());
                     mMusicNowTime.setText(startDuration + "/" + endDuration);
-                    mMusicSeekBar.setMax(s.getInt("duration"));
+                    mMusicSeekBar.setMax((int) audioEntry.getDuration());
                     System.out.println("更新歌曲");
                 } catch (JSONException e) {
                     e.printStackTrace();

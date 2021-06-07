@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
  * Json工具类.
  */
 public class GsonUtils {
-    private static Gson gson = new GsonBuilder().create();
+    private static final Gson gson = new GsonBuilder().create();
 
     public static String toJson(Object value) {
         return gson.toJson(value);
@@ -21,6 +21,7 @@ public class GsonUtils {
     }
 
     public static <T> T fromJson(String json, Type typeOfT) throws JsonParseException {
-        return (T) gson.fromJson(json, typeOfT);
+        return gson.fromJson(json, typeOfT);
+        //(T)
     }
 }

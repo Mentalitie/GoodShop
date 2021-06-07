@@ -21,7 +21,7 @@ import butterknife.OnClick;
 import static com.blizzard.war.utils.CommonUtil.GetColor;
 import static com.blizzard.war.utils.CommonUtil.GetDrawable;
 import static com.blizzard.war.utils.CommonUtil.JumpFinish;
-import static com.blizzard.war.utils.CommonUtil.LoadingShow;
+//import static com.blizzard.war.utils.CommonUtil.LoadingShow;
 import static com.blizzard.war.utils.CommonUtil.getHandler;
 
 /**
@@ -67,7 +67,7 @@ public class RegisterActivity extends RxBaseActivity {
         et_code.setOnFocusChangeListener((v, hasFocus) -> onFocus(v.getId()));
         et_password.setOnFocusChangeListener((v, hasFocus) -> onFocus(v.getId()));
         et_getCode.setOnClickListener((v) -> onClick(v.getId()));
-        SystemBarHelper.tintStatusBar(this, GetColor(R.color.window_background), 0);
+//        SystemBarHelper.tintStatusBar(this, GetColor(R.color.window_background), 0);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class RegisterActivity extends RxBaseActivity {
         String name = et_phone.getText().toString();
         String code = et_code.getText().toString();
         String password = et_password.getText().toString();
-        Animator animator = AnimatorInflater.loadAnimator(this, R.animator.ator_edit_empty);
+        Animator animator = AnimatorInflater.loadAnimator(this, R.animator.anim_edit_empty);
         if (TextUtils.isEmpty(name)) {
             animator.setTarget(phone_line);
             animator.start();
@@ -139,7 +139,7 @@ public class RegisterActivity extends RxBaseActivity {
             animator.start();
             return;
         }
-        LoadingShow(this);
+//        LoadingShow(this);
         handler.postDelayed(() -> JumpFinish(RegisterActivity.this, MainActivity.class), 2000);
     }
 

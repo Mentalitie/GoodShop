@@ -1,6 +1,7 @@
 package com.blizzard.war.mvp.ui.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +11,10 @@ import android.widget.TextView;
 import com.blizzard.war.R;
 
 
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
-
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.blizzard.war.utils.CommonUtil.GetDrawable;
 
 /**
  * 功能描述:
@@ -34,20 +30,19 @@ public class TextReadAdapter extends RecyclerView.Adapter {
     private SelectItem mSelectItem;
     private int mPosition;
 
-    // banner 模型
-    private List<JSONObject> txtList;
-    private Boolean listBo;
 
-    public TextReadAdapter(Context context, List<JSONObject> list, Boolean bo) {
+    private  String[] txtList;
+
+
+    public TextReadAdapter(Context context,  String[] list) {
         this.context = context;
         this.txtList = list;
-        this.listBo = bo;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_read_gird, null);
+                .inflate(R.layout.item_read_text_gird, null);
         return new TxtReadViewHolder(view);
     }
 
@@ -55,27 +50,18 @@ public class TextReadAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
         if (viewHolder instanceof TxtReadViewHolder) {
             TxtReadViewHolder txtReadViewHolder = (TxtReadViewHolder) viewHolder;
-            txtReadViewHolder.tvRead.setText(txtList.get(i).getString("title"));
-            setSelect(txtReadViewHolder,txtList.get(i).getBoolean("isSelect"));
-            txtReadViewHolder.tvRead.setOnClickListener(v -> {
-                mPosition = i;
-                mSelectItem.select(v, i, listBo);
-            });
+            if (txtList[i].length() > 3) {
+//                txtReadViewHolder.tvReadText.setText(txtList[i]);
+                txtReadViewHolder.tvReadText.setText(txtList[i].replace("”", "").replace("“", "") + "。");
+            } else {
+                txtReadViewHolder.tvReadText.setVisibility(View.GONE);
+            }
         }
     }
-
-    private void setSelect(TxtReadViewHolder txtReadViewHolder,Boolean bo){
-        if (bo) {
-            txtReadViewHolder.tvRead.setBackground(GetDrawable(R.color.window_tool_bar_icon));
-        } else {
-            txtReadViewHolder.tvRead.setBackground(GetDrawable(R.color.window_background));
-        }
-    }
-
 
     @Override
     public int getItemCount() {
-        return txtList.size();
+        return txtList.length;
     }
 
     public int getSpanSize(int pos) {
@@ -87,7 +73,7 @@ public class TextReadAdapter extends RecyclerView.Adapter {
     }
 
     public interface SelectItem {
-        void select(View view, int i, Boolean bo);
+        void select(View view, int i);
     }
 
     public void setSelectItem(SelectItem selectItem) {
@@ -99,8 +85,8 @@ public class TextReadAdapter extends RecyclerView.Adapter {
      * 阅读 Grid banner ViewHolder
      */
     static class TxtReadViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_read)
-        TextView tvRead;
+        @BindView(R.id.tv_read_text)
+        TextView tvReadText;
 
         TxtReadViewHolder(View itemView) {
             super(itemView);

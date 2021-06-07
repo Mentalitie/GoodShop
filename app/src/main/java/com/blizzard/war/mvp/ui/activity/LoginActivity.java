@@ -1,11 +1,8 @@
 package com.blizzard.war.mvp.ui.activity;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,8 +15,11 @@ import android.widget.TextView;
 import com.blizzard.war.R;
 import com.blizzard.war.mvp.contract.RxBaseActivity;
 import com.blizzard.war.utils.CommonUtil;
+import com.blizzard.war.utils.GsonUtils;
 import com.blizzard.war.utils.SystemBarHelper;
 import com.blizzard.war.utils.ToastUtil;
+
+import net.sf.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -27,8 +27,8 @@ import butterknife.OnClick;
 import static com.blizzard.war.utils.CommonUtil.GetColor;
 import static com.blizzard.war.utils.CommonUtil.GetDrawable;
 import static com.blizzard.war.utils.CommonUtil.JumpFinish;
-import static com.blizzard.war.utils.CommonUtil.JumpTo;
 import static com.blizzard.war.utils.CommonUtil.SetDrawable;
+import static com.blizzard.war.utils.FileUtil.SaveFile;
 
 /**
  * 功能描述:
@@ -86,7 +86,7 @@ public class LoginActivity extends RxBaseActivity {
             login();
             return false;
         });
-        SystemBarHelper.tintStatusBar(this, GetColor(R.color.window_background), 0);
+//        SystemBarHelper.tintStatusBar(this, GetColor(R.color.window_background), 0);
 //        LoadingShow(this);
     }
 
@@ -108,7 +108,7 @@ public class LoginActivity extends RxBaseActivity {
                 break;
             case R.id.btn_register:
                 //注册
-                JumpTo(RegisterActivity.class);
+                JumpFinish(this, RegisterActivity.class);
                 break;
         }
     }
@@ -145,7 +145,7 @@ public class LoginActivity extends RxBaseActivity {
     private void login() {
         String name = et_username.getText().toString();
         String password = et_password.getText().toString();
-        Animator animator = AnimatorInflater.loadAnimator(this, R.animator.ator_edit_empty);
+        Animator animator = AnimatorInflater.loadAnimator(this, R.animator.anim_edit_empty);
         if (TextUtils.isEmpty(name)) {
             ToastUtil.show("用户名不能为空");
             animator.setTarget(username_line);
@@ -158,65 +158,11 @@ public class LoginActivity extends RxBaseActivity {
             animator.start();
             return;
         }
-        showContacts();
-    }
-
-    private static final int READ_PHONE_STATE = 100;
-
-    //请求权限
-    public void showContacts() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.INTERNET,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_NETWORK_STATE,
-                    Manifest.permission.ACCESS_WIFI_STATE,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
-                    Manifest.permission.CHANGE_WIFI_STATE
-            }, READ_PHONE_STATE);
-        } else {
-            JumpFinish(this, MainActivity.class);
-        }
-    }
-
-    //Android6.0申请权限的回调方法
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            // requestCode即所声明的权限获取码，在checkSelfPermission时传入
-            case READ_PHONE_STATE:
-                if (grantResults[1] == PackageManager.PERMISSION_DENIED) {
-                
-                } else {
-                    JumpFinish(this, MainActivity.class);
-                }
-                break;
-            default:
-                break;
-        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("accout", name);
+        jsonObject.put("password", password);
+        String s = GsonUtils.toJson(jsonObject);
+        SaveFile(this, "accountFile.txt", s);
+        JumpFinish(this, MainActivity.class);
     }
 }

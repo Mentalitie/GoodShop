@@ -1,11 +1,11 @@
 package com.blizzard.war.mvp.ui.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -19,7 +19,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
@@ -28,25 +27,33 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.blizzard.war.R;
+import com.blizzard.war.entry.AudioEntry;
 import com.blizzard.war.mvp.contract.RxBaseActivity;
 import com.blizzard.war.mvp.model.download.DownloadFragment;
 import com.blizzard.war.mvp.model.favourite.FavouriteFragment;
 import com.blizzard.war.mvp.model.group.GroupFragment;
 import com.blizzard.war.mvp.model.history.HistoryFragment;
 import com.blizzard.war.mvp.model.home.HomePageFragment;
-import com.blizzard.war.mvp.model.read.ReadFragment;
 import com.blizzard.war.mvp.model.setting.SettingFragment;
 import com.blizzard.war.mvp.model.tracker.TrackerFragment;
 import com.blizzard.war.mvp.ui.widget.CircleImageView;
 import com.blizzard.war.service.AudioPlayService;
+import com.blizzard.war.service.MessageWrap;
 import com.blizzard.war.service.NotificationReceiver;
+import com.blizzard.war.utils.CommonUtil;
 import com.blizzard.war.utils.ConstantUtil;
 import com.blizzard.war.utils.PreferenceUtil;
 import com.blizzard.war.utils.ToastUtil;
 
-import org.json.JSONObject;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
+
+import static com.blizzard.war.app.BiliApplication.RegisterService;
+import static com.blizzard.war.app.BiliApplication.getIsServiceStart;
+import static com.blizzard.war.utils.Config.MUSIC_LIST_COMPLETE;
 
 /**
  * 功能描述:
@@ -73,7 +80,7 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
     private DownloadFragment mDownloadFragment;
     private HistoryFragment mHistoryFragment;
     private SettingFragment mSettingFragment;
-    private ReadFragment mReadFragment;
+    private ReadActivity mReadActivity;
     private MenuItem menuItem;
     private View headerView;
 
@@ -88,23 +95,26 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
     private static NotifyChangeListener mNotifyChangeListener;
     private Boolean isServeLive = false;
     private static final int READ_PHONE_STATE = 100;
+    private static Activity _this;
 
+    public static int WRITE_READ_PERMISSION = PackageManager.PERMISSION_GRANTED;
 
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
     }
 
-
     @Override
     public void initViews(Bundle savedInstanceState) {
+        _this = this;
         //初始化Fragment
         initFragments();
         //初始化侧滑菜单
         initNavigationView();
-
+        //获取权限
         showContacts();
 
+        EventBus.getDefault().register(this);
     }
 
     /**
@@ -118,7 +128,6 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
         mDownloadFragment = DownloadFragment.newInstance();
         mHistoryFragment = HistoryFragment.newInstance();
         mSettingFragment = SettingFragment.newInstance();
-        mReadFragment = ReadFragment.newInstance();
 
 
         fragments = new Fragment[]{
@@ -128,8 +137,7 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
                 mTrackerFragment,
                 mDownloadFragment,
                 mHistoryFragment,
-                mSettingFragment,
-                mReadFragment
+                mSettingFragment
         };
         // 添加显示第一个fragment
         getSupportFragmentManager()
@@ -166,9 +174,9 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
         audioPlayService.getAudioList();
         audioPlayService.setPlayerListener(new AudioPlayService.PlayerListener() {
             @Override
-            public void isChangePlay(JSONObject s) {
+            public void isChangePlay(AudioEntry audioEntry) {
                 setNotification();
-                mNotifyChangeListener.isChange(s);
+                mNotifyChangeListener.isChange(audioEntry);
             }
 
             @Override
@@ -212,14 +220,9 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
                 // 设置中心
                 changeFragmentIndex(item, 6);
                 return true;
-            // 阅读
-            case R.id.item_read:
-                changeFragmentIndex(item, 7);
-                return true;
             // 视频
             case R.id.item_video:
-//                CommonUtil.JumpTo(VideoPlayActivity.class);
-                startRemind();
+                CommonUtil.JumpTo(VideoPlayActivity.class);
                 return true;
         }
         return false;
@@ -323,15 +326,6 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
         return audioPlayService.getSongName();
     }
 
-    @Override
-    protected void onDestroy() {
-        if (isServeLive) {
-            unregisterReceiver(mNotificationReceiver);
-        }
-        audioPlayService.stop();
-        super.onDestroy();
-    }
-
     /**
      * 自定义通知栏
      */
@@ -400,7 +394,6 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
                     .build();
 
             if (!isServeLive) {
-                System.out.println("已注册");
                 isServeLive = true;
                 IntentFilter intentFilter = new IntentFilter();
                 mNotificationReceiver = new NotificationReceiver();
@@ -446,21 +439,12 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
                     ToastUtil.show(s);
                 });
             }
-
-        } else {
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, id)
-                    .setContentTitle("2 new messages")
-                    .setContentText("hahaha")
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setOngoing(true)
-                    .setPriority(NotificationCompat.PRIORITY_MAX);//设置最大优先级
-            notification = notificationBuilder.build();
+            manager.notify(1, notification);
         }
-        manager.notify(1, notification);
     }
 
     public interface NotifyChangeListener {
-        void isChange(JSONObject jsonObject);
+        void isChange(AudioEntry audioEntry);
 
         void isSeedChange();
     }
@@ -469,41 +453,30 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
         mNotifyChangeListener = NotifyChangeListener;
     }
 
-
-    /**
-     * 开启提醒
-     */
-    private void startRemind() {
-
-        Intent intent = new Intent(this, RemindActivity.class);
-        startActivity(intent);
-
-    }
-
     //请求权限
-    public void showContacts() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+    public static void showContacts() {
+        if (ActivityCompat.checkSelfPermission(_this, Manifest.permission.INTERNET)
                 != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                || ActivityCompat.checkSelfPermission(_this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
+                || ActivityCompat.checkSelfPermission(_this, Manifest.permission.ACCESS_NETWORK_STATE)
                 != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
+                || ActivityCompat.checkSelfPermission(_this, Manifest.permission.ACCESS_WIFI_STATE)
                 != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                || ActivityCompat.checkSelfPermission(_this, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                || ActivityCompat.checkSelfPermission(_this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                || ActivityCompat.checkSelfPermission(_this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                || ActivityCompat.checkSelfPermission(_this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS)
+                || ActivityCompat.checkSelfPermission(_this, Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS)
                 != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE)
+                || ActivityCompat.checkSelfPermission(_this, Manifest.permission.CHANGE_WIFI_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
             // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
-            ActivityCompat.requestPermissions(this, new String[]{
+            ActivityCompat.requestPermissions(_this, new String[]{
                     Manifest.permission.INTERNET,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.ACCESS_NETWORK_STATE,
@@ -514,9 +487,6 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
                     Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
                     Manifest.permission.CHANGE_WIFI_STATE
             }, READ_PHONE_STATE);
-        } else {
-            //初始化音乐服务
-            initService();
         }
     }
 
@@ -528,12 +498,36 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
             // requestCode即所声明的权限获取码，在checkSelfPermission时传入
             case READ_PHONE_STATE:
                 if (grantResults[1] == PackageManager.PERMISSION_DENIED) {
+                    WRITE_READ_PERMISSION = PackageManager.PERMISSION_DENIED;
                 } else {
-                    initService();
+                    if (!getIsServiceStart()) {
+                        RegisterService();
+                    } else {
+                        initService();
+                    }
                 }
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (isServeLive) {
+            unregisterReceiver(mNotificationReceiver);
+        }
+        if (audioPlayService != null) {
+            audioPlayService.stop();
+        }
+        super.onDestroy();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageWrap(MessageWrap messageWrap) {
+        if (messageWrap.status == MUSIC_LIST_COMPLETE) {
+            initService();
+            EventBus.getDefault().unregister(this);
         }
     }
 }

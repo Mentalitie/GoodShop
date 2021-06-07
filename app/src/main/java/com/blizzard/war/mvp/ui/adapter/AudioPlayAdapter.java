@@ -8,9 +8,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.blizzard.war.R;
+import com.blizzard.war.entry.AudioEntry;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import net.sf.json.JSONException;
 
 import java.util.List;
 
@@ -32,9 +33,9 @@ public class AudioPlayAdapter extends RecyclerView.Adapter {
     private int mPosition;
 
     // banner 模型
-    private List<JSONObject> musicList;
+    private List<AudioEntry> musicList;
 
-    public AudioPlayAdapter(Context context, List<JSONObject> list) {
+    public AudioPlayAdapter(Context context, List<AudioEntry> list) {
         this.context = context;
         this.musicList = list;
     }
@@ -51,7 +52,7 @@ public class AudioPlayAdapter extends RecyclerView.Adapter {
         if (viewHolder instanceof MusicListViewHolder) {
             MusicListViewHolder musicListViewHolder = (MusicListViewHolder) viewHolder;
             try {
-                musicListViewHolder.itemText.setText(musicList.get(i).getString("song_name"));
+                musicListViewHolder.itemText.setText(musicList.get(i).getTitle());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

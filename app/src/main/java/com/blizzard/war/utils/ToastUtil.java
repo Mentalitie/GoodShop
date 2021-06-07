@@ -17,7 +17,6 @@ import com.blizzard.war.app.BiliApplication;
  * @date: 2019/4/16 11:20
  */
 public class ToastUtil {
-    private static Toast mToast;
     private static Toast mToastTop;
     private static Toast mToastCenter;
     private static Toast mToastBottom;
@@ -32,6 +31,7 @@ public class ToastUtil {
             throw new RuntimeException("DialogUIUtils not initialized!");
         }
         int layoutId = R.layout.util_toast;
+        Toast mToast;
         if (gravity == Gravity.TOP) {
             if (mToastTop == null) {
                 mToastTop = Toast.makeText(context, str, showTime);

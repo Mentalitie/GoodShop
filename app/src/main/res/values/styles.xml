@@ -56,4 +56,22 @@
         <item name="android:textSize">@dimen/sp16</item>
     </style>
 
+    <style name="AnimationBottomFade">
+        <item name="android:windowEnterAnimation">@animator/anim_pop_in_bottom</item>
+        <item name="android:windowExitAnimation">@animator/anim_pop_out_bottom</item>
+    </style>
+    <style name="AnimationLeftFade">
+        <item name="android:windowEnterAnimation">@animator/anim_pop_in_left</item>
+        <item name="android:windowExitAnimation">@animator/anim_pop_out_left</item>
+    </style>
+    <style name="AnimationRightFade">
+        <item name="android:windowEnterAnimation">@animator/anim_pop_in_right</item>
+        <item name="android:windowExitAnimation">@animator/anim_pop_out_right</item>
+    </style>
+    <style name="BottomDialog" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--动画设置-->
+        <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+    </style>
 </resources>

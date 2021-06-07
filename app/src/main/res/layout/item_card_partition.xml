@@ -48,8 +48,8 @@
                     android:id="@+id/item_card_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp3"
                     android:layout_marginStart="@dimen/dp3"
+                    android:layout_marginLeft="@dimen/dp3"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/font_normal"
@@ -66,11 +66,11 @@
                     android:id="@+id/item_card_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
-                    android:layout_marginLeft="@dimen/dp4"
                     android:layout_marginStart="@dimen/dp4"
+                    android:layout_marginLeft="@dimen/dp4"
                     android:textColor="@color/font_normal"
                     android:textSize="@dimen/sp11" />
 
@@ -83,9 +83,9 @@
                     android:layout_centerInParent="true"
                     android:layout_marginEnd="@dimen/dp4"
                     android:layout_marginRight="@dimen/dp4"
+                    android:drawableStart="@drawable/ic_watching"
                     android:drawableLeft="@drawable/ic_watching"
                     android:drawablePadding="@dimen/dp3"
-                    android:drawableStart="@drawable/ic_watching"
                     android:textColor="@color/font_normal"
                     android:textSize="@dimen/sp12" />
 

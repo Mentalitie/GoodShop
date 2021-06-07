@@ -11,6 +11,7 @@
     <color name="window_view_line">#FF4B4B4B</color>
     <color name="window_control">#FFE6E6E6</color>
     <color name="window_tool_bar_icon">#FF797979</color>
+    <color name="window_translate">#00000000</color>
 
     <color name="tab_bar_background">#373737</color>
     <color name="tab_text_color">#ee7799</color>
@@ -26,6 +27,7 @@
     <color name="text_hint_default">#bbbbbb</color>
     <color name="black_alpha_45">#71000000</color>
     <color name="font_normal">#8f8f8f</color>
+    <color name="font_black">#000000</color>
     <color name="font_white">#ffffff</color>
 
     <color name="button_default">#ee7799</color>
@@ -43,4 +45,6 @@
     <color name="white_80">#FAFAFA</color>
 
     <color name="paper_background">#373737</color>
+
+    <color name="read_text_back">#CCE8CF</color>
 </resources>

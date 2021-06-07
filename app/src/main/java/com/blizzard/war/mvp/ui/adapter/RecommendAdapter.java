@@ -34,8 +34,7 @@ public class RecommendAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view;
-        view = LayoutInflater.from(viewGroup.getContext())
+        View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_card_partition, null);
         return new RecommendAdapter.GridItemViewHolder(view);
     }

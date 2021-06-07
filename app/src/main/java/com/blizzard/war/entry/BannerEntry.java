@@ -1,4 +1,4 @@
-package com.blizzard.war.mvp.ui.widget.banner;
+package com.blizzard.war.entry;
 
 /**
  * 功能描述:

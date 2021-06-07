@@ -1,4 +1,4 @@
-package com.blizzard.war.mvp.ui.widget.banner;
+package com.blizzard.war.mvp.ui.widget;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,7 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.blizzard.war.R;
+import com.blizzard.war.entry.BannerEntry;
 import com.blizzard.war.mvp.ui.activity.BrowserActivity;
+import com.blizzard.war.mvp.ui.adapter.BannerAdapter;
 import com.blizzard.war.utils.CommonUtil;
 import com.blizzard.war.utils.DisplayUtil;
 import com.bumptech.glide.Glide;

@@ -5,19 +5,15 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.AppBarLayout;
 import android.util.DisplayMetrics;
 import android.util.Rational;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.blizzard.war.R;
 import com.blizzard.war.mvp.contract.RxBaseActivity;
-import com.blizzard.war.utils.CommonUtil;
 import com.blizzard.war.utils.SurfaceViewCustom;
 import com.blizzard.war.utils.SystemBarHelper;
 
@@ -60,7 +56,7 @@ public class VideoPlayActivity extends RxBaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        SystemBarHelper.tintStatusBar(this, GetColor(R.color.window_view_background), 0);
+//        SystemBarHelper.tintStatusBar(this, GetColor(R.color.window_view_background), 0);
         list.add("https://vd3.bdstatic.com/mda-je5re8sbtwpji1vd/sc/mda-je5re8sbtwpji1vd.mp4?auth_key=1568712604-0-0-f4df433403e07e2d2c80e4c7bf4136f8&bcevod_channel=searchbox_feed&pd=bjh&abtest=all");
         list.add("https://vd4.bdstatic.com/mda-je6req249jyj1qu1/sc/mda-je6req249jyj1qu1.mp4?auth_key=1568713271-0-0-dc33fbcf75089bd6561bb25d75fe881d&bcevod_channel=searchbox_feed&pd=bjh&abtest=all");
         new Thread() {

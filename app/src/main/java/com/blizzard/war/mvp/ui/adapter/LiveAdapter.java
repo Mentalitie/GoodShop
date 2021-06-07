@@ -11,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blizzard.war.R;
-import com.blizzard.war.mvp.ui.widget.banner.BannerEntry;
-import com.blizzard.war.mvp.ui.widget.banner.BannerView;
+import com.blizzard.war.entry.BannerEntry;
+import com.blizzard.war.mvp.ui.widget.BannerView;
 import com.blizzard.war.utils.CommonUtil;
 import com.blizzard.war.utils.ToastUtil;
 import com.bumptech.glide.Glide;
@@ -244,7 +244,7 @@ public class LiveAdapter extends RecyclerView.Adapter {
 
 
     /**
-     * 直播界面分区类型 ViewHolder
+     * 直播界面阅读类型 ViewHolder
      */
     static class LivePartitionViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_view_partition_title)

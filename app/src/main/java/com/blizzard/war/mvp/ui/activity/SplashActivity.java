@@ -15,6 +15,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import static com.blizzard.war.utils.CommonUtil.JumpFinish;
+import static com.blizzard.war.utils.FileUtil.LoadFile;
 
 /**
  * 功能描述:
@@ -46,7 +47,11 @@ public class SplashActivity extends RxActivity {
 
 
     private void finishTask() {
-        JumpFinish(SplashActivity.this, MainActivity.class);
+        if (null != LoadFile(this, "accountFile.txt")) {
+            JumpFinish(SplashActivity.this, MainActivity.class);
+        } else {
+            JumpFinish(SplashActivity.this, LoginActivity.class);
+        }
     }
 
 

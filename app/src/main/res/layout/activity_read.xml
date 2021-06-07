@@ -2,21 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/read_text_back"
     android:keepScreenOn="true"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_toolbar" />
+<!--    <include layout="@layout/layout_toolbar" />-->
 
-    <!--    <com.blizzard.war.utils.SurfaceViewCustom-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_weight="1" />-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/window_background"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp20"
+        android:paddingRight="@dimen/dp20">
 
 
         <android.support.v7.widget.RecyclerView
@@ -25,40 +23,6 @@
             android:layout_height="wrap_content"
             android:overScrollMode="never"
             android:scrollbars="none" />
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_showChild"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:scrollbars="none" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <SeekBar
-            android:id="@+id/sb_voice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp20"
-            android:layout_marginRight="@dimen/dp20"
-            android:max="15"
-            android:paddingBottom="@dimen/dp15" />
-
-        <SeekBar
-            android:id="@+id/sb_speed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp20"
-            android:layout_marginRight="@dimen/dp20"
-            android:max="20"
-            android:paddingTop="@dimen/dp15"
-            android:paddingBottom="@dimen/dp15" />
 
     </LinearLayout>
 

@@ -69,18 +69,18 @@ public class AudioUtils {
     }
 
     // 关闭/打开扬声器播放
-    public void setSpeakerStatus(boolean on) {
-        if (on) { //扬声器
-            mAudioManager.setSpeakerphoneOn(true);
-            mAudioManager.setMode(AudioManager.MODE_NORMAL);
-        } else {
-            // 设置最大音量
-            int max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL);
-            mAudioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, max, AudioManager.STREAM_VOICE_CALL);
-            // 设置成听筒模式
-            mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-            mAudioManager.setSpeakerphoneOn(false);// 关闭扬声器
-            mAudioManager.setRouting(AudioManager.MODE_NORMAL, AudioManager.ROUTE_EARPIECE, AudioManager.ROUTE_ALL);
-        }
-    }
+//    public void setSpeakerStatus(boolean on) {
+//        if (on) { //扬声器
+//            mAudioManager.setSpeakerphoneOn(true);
+//            mAudioManager.setMode(AudioManager.MODE_NORMAL);
+//        } else {
+//            // 设置最大音量
+//            int max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL);
+//            mAudioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, max, AudioManager.STREAM_VOICE_CALL);
+//            // 设置成听筒模式
+//            mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+//            mAudioManager.setSpeakerphoneOn(false);// 关闭扬声器
+//            mAudioManager.setRouting(AudioManager.MODE_NORMAL, AudioManager.ROUTE_EARPIECE, AudioManager.ROUTE_ALL);
+//        }
+//    }
 }
