@@ -191,5 +191,6 @@
     <string name="right_pop">right_pop</string>
     <string name="pop_menu">pop_menu</string>
     <string name="bottom_sheet">bottom_sheet</string>
+    <string name="read_catalogue">小说目录</string>
 
 </resources>

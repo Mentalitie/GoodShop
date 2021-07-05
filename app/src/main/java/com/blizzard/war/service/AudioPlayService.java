@@ -20,6 +20,7 @@ import java.util.TimerTask;
  * @date: 2019/5/6 18:20
  */
 
+@SuppressWarnings("unchecked")
 public class AudioPlayService {
     private int songNum = 0; // 当前播放歌曲在list中的下标，flag为标志
     private List<Integer> prevSongNum = new ArrayList<>(); // 上一首歌曲记忆位置
@@ -28,13 +29,15 @@ public class AudioPlayService {
     private boolean isPlayComplete;
     private int listenerModel = 1; // 设置播放模式
 
-    private List<AudioEntry> musicList; // 存放找到的所有mp3的绝对路径。
+    private List musicList; // 存放找到的所有mp3的绝对路径。
+    private AudioEntry audioEntry;
     private MediaPlayer player; // 定义多媒体对象
     private PlayerListener mPlayerListener;
     private Timer timer;
 
     private void setPlayName() {
-        songName = musicList.get(songNum).getSong_name();
+        audioEntry = (AudioEntry) musicList.get(songNum);
+        songName = audioEntry.getSong_name();
     }
 
     public void play() {
@@ -51,8 +54,8 @@ public class AudioPlayService {
                             timer.cancel();
                             timer = null;
                         }
-                        String dataSource = musicList.get(songNum).getUrl();//得到当前播放音乐的路径
                         setPlayName();//截取歌名
+                        String dataSource = audioEntry.getUrl();//得到当前播放音乐的路径
                         // 指定参数为音频文件
 //                        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
                         player.setDataSource(dataSource);//为多媒体对象设置播放路径
@@ -66,7 +69,7 @@ public class AudioPlayService {
                             });
                         }
 
-                        mPlayerListener.isChangePlay(musicList.get(songNum));
+                        mPlayerListener.isChangePlay(audioEntry);
                         SendPlayMsg();
                     } catch (Exception e) {
                         System.out.println("MusicService: " + e.getMessage());

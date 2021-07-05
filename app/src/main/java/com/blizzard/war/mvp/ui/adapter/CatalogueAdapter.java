@@ -1,43 +1,44 @@
 package com.blizzard.war.mvp.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blizzard.war.R;
-
-
-import net.sf.json.JSONObject;
+import com.blizzard.war.entry.ReadEntry;
+import com.blizzard.war.utils.CommonUtil;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.blizzard.war.utils.CommonUtil.GetDrawable;
+
 /**
  * 功能描述:
- * 阅读适配器
  *
  * @auther: ma
- * @param: TextReadAdapter
- * @date: 2021-04-20 17:02
+ * @param: CatalogueAdapter
+ * @date: 2019/4/29 15:30
  */
 
-public class TextReadAdapter extends RecyclerView.Adapter {
+public class CatalogueAdapter extends RecyclerView.Adapter {
     private Context context;
     private SelectItem mSelectItem;
     private int mPosition;
 
+    private List<ReadEntry> txtList;
 
-    private List<JSONObject> txtList;
-
-
-    public TextReadAdapter(Context context, List<JSONObject> list) {
+    public CatalogueAdapter(Context context, List<ReadEntry> list) {
         this.context = context;
         this.txtList = list;
     }
@@ -46,27 +47,27 @@ public class TextReadAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_read_text_gird, null);
-        return new TxtReadViewHolder(view);
+        return new CatalogueAdapter.CatalogueViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        if (viewHolder instanceof TxtReadViewHolder) {
-            TxtReadViewHolder txtReadViewHolder = (TxtReadViewHolder) viewHolder;
-            txtReadViewHolder.llReadGird.setOnClickListener(new View.OnClickListener() {
+        if (viewHolder instanceof CatalogueViewHolder) {
+            CatalogueViewHolder catalogueViewHolder = (CatalogueViewHolder) viewHolder;
+            catalogueViewHolder.mTextView.setText(txtList.get(i).getTitle());
+            catalogueViewHolder.llReadGird.setBackground(CommonUtil.GetDrawable(R.drawable.db_line_bottom));
+            catalogueViewHolder.llReadGird.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mSelectItem.select(v, i);
                 }
             });
-            if (txtList.size() > 3) {
-//                txtReadViewHolder.tvReadText.setText(txtList[i]);
-                JSONObject jsonObject = txtList.get(i);
-                txtReadViewHolder.tvReadText.setText(jsonObject.getString("text") + "。");
-            } else {
-                txtReadViewHolder.tvReadText.setVisibility(View.GONE);
-            }
         }
+    }
+
+
+    public void setViewBackColor() {
+
     }
 
     @Override
@@ -78,9 +79,6 @@ public class TextReadAdapter extends RecyclerView.Adapter {
         return 1;
     }
 
-    public void setViewBackColor() {
-
-    }
 
     public interface SelectItem {
         void select(View view, int i);
@@ -90,20 +88,18 @@ public class TextReadAdapter extends RecyclerView.Adapter {
         mSelectItem = selectItem;
     }
 
-
     /**
-     * 阅读 Grid banner ViewHolder
+     * Grid Item ViewHolder
      */
-    static class TxtReadViewHolder extends RecyclerView.ViewHolder {
+    static class CatalogueViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tv_read_text)
+        TextView mTextView;
         @BindView(R.id.ll_read_gird)
         LinearLayout llReadGird;
-        @BindView(R.id.tv_read_text)
-        TextView tvReadText;
 
-        TxtReadViewHolder(View itemView) {
+        CatalogueViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
-
 }

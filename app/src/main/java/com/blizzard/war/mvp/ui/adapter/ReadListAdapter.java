@@ -38,7 +38,7 @@ public class ReadListAdapter extends RecyclerView.Adapter {
 
     private List<ReadEntry> txtList;
 
-    public ReadListAdapter(Context context, List list) {
+    public ReadListAdapter(Context context, List<ReadEntry> list) {
         this.context = context;
         this.txtList = list;
     }

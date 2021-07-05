@@ -3,7 +3,7 @@
     <!--系统默认颜色-->
     <color name="colorPrimary">#3b3b3b</color>
     <color name="colorPrimaryDark">#373737</color>
-    <color name="colorAccent">#999999</color>
+    <color name="colorAccent">#ee7799</color>
 
     <color name="window_white">#ffffff</color>
     <color name="window_background">#3b3b3b</color>

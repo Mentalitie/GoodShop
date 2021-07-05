@@ -81,20 +81,17 @@ dependencies {
     implementation files('./libs/json-lib-1.1-jdk13.jar')
 
     // 阿里云sdk
-//    implementation('com.alibaba.nls:nls-sdk-common:2.1.6')
-//    implementation('com.alibaba.nls:nls-sdk-tts:2.1.6')
-//    implementation files('./libs/javax.xml.bind.jar')
-//    implementation group: 'xerces', name: 'xercesImpl', version: '2.11.0'
-    implementation files('./libs/nuisdk-release.aar')
-    implementation files('./libs/fastjson-1.1.46.android.jar')
+    implementation('com.alibaba.nls:nls-sdk-common:2.1.6')
+    implementation('com.alibaba.nls:nls-sdk-tts:2.1.6')
+    implementation files('./libs/javax.xml.bind.jar')
+    implementation group: 'xerces', name: 'xercesImpl', version: '2.11.0'
+
+//    implementation files('./libs/nuisdk-release.aar')
+//    implementation files('./libs/fastjson-1.1.46.android.jar')
 
 
     // 事件通知
     implementation 'org.greenrobot:eventbus:3.1.1'
-
-    // bottomSheet
-//    compileOnly 'com.google.android.material:material:1.2.1'
-
 
     // rxbinding点击事件
 //    implementation 'com.jakewharton.rxbinding:rxbinding:0.3.0'

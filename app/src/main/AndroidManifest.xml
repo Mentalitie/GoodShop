@@ -99,7 +99,7 @@
         <activity
             android:name=".mvp.ui.activity.ReadActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <!--android:configChanges="screenLayout|orientation"-->
         <!--android:supportsPictureInPicture="true"-->
@@ -107,6 +107,7 @@
         <service android:name=".service.ReadIntentService" />
         <service android:name=".service.MusicIntentService" />
         <service android:name=".service.DownLoadStatusService" />
+        <service android:name=".service.ReadDownLoadIntentService" />
     </application>
 
 </manifest>

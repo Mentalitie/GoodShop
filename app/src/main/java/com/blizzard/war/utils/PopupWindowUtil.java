@@ -64,13 +64,13 @@ public class PopupWindowUtil {
 //        popupWindow.setBackgroundDrawable(dw);
         // 设置背景半透明
         backgroundAlpha(0.5f);
-        SystemBarHelper.setStatusBarDarkMode(mActivity, true);
+        SystemBarHelper.setTextDark(mActivity, true);
 
         // 关闭事件
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                SystemBarHelper.setStatusBarDarkMode(mActivity, false);
+                SystemBarHelper.setTextDark(mActivity, false);
                 backgroundAlpha(1f);
             }
         });

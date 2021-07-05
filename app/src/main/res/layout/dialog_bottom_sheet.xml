@@ -7,24 +7,30 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp40"
+        android:layout_height="@dimen/dp50"
+        android:background="@drawable/db_line_bottom"
         android:gravity="center">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="sadadadadad"
-            android:textAlignment="center" />
+            android:text="@string/read_catalogue"
+            android:textAlignment="center"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/sp16" />
     </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="800dp"
-        android:background="@color/window_view_background">
+        android:layout_height="match_parent"
+        android:background="@color/window_white"
+        android:paddingLeft="@dimen/dp20"
+        android:paddingRight="@dimen/dp20"
+        android:paddingBottom="@dimen/dp20">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/media_play_recycle"
+            android:id="@+id/rv_catalogue"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
